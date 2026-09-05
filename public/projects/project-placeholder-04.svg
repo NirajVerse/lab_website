@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title">
+  <title id="title">Completed project image placeholder</title>
+  <rect width="1200" height="800" fill="#eef0f1"/>
+  <g fill="none" stroke="#702e3e" stroke-width="2"><rect x="190" y="125" width="310" height="310"/><rect x="450" y="270" width="310" height="310"/><rect x="700" y="125" width="310" height="310"/></g>
+  <text x="76" y="742" fill="#5d1725" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="4">[COMPLETED PROJECT IMAGE]</text>
+</svg>
