@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700" role="img" aria-labelledby="title">
+  <title id="title">Research area 01 image placeholder</title>
+  <rect width="1000" height="700" fill="#eef0f1"/>
+  <g fill="none" stroke="#702e3e" stroke-width="2">
+    <circle cx="410" cy="350" r="210"/><circle cx="410" cy="350" r="126" opacity=".45"/>
+    <path d="M0 525h1000M760 0v700" opacity=".35"/>
+  </g>
+  <circle cx="410" cy="350" r="12" fill="#8e9395"/>
+  <text x="64" y="642" fill="#5d1725" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="3">[RESEARCH AREA 01 IMAGE]</text>
+</svg>

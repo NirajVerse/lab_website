@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700" role="img" aria-labelledby="title">
+  <title id="title">Research area 03 image placeholder</title>
+  <rect width="1000" height="700" fill="#eef0f1"/>
+  <g fill="none" stroke="#702e3e" stroke-width="2">
+    <path d="m215 188 192-86 176 114 204-48 80 222-130 174-240-18-158 70-190-160z"/>
+    <path d="m215 188 282 358 86-330 154 348M149 456l434-240 284 174" opacity=".42"/>
+  </g>
+  <g fill="#8e9395"><circle cx="215" cy="188" r="9"/><circle cx="583" cy="216" r="9"/><circle cx="497" cy="546" r="9"/><circle cx="867" cy="390" r="9"/></g>
+  <text x="64" y="642" fill="#5d1725" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="3">[RESEARCH AREA 03 IMAGE]</text>
+</svg>
