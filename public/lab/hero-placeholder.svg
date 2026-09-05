@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Research image placeholder</title>
+  <desc id="desc">A structured abstract grid marking where a lab or research image should be placed.</desc>
+  <rect width="1200" height="900" fill="#5d1725"/>
+  <g fill="none" stroke="#c1c6c8" stroke-opacity=".22" stroke-width="1">
+    <path d="M0 150h1200M0 300h1200M0 450h1200M0 600h1200M0 750h1200"/>
+    <path d="M150 0v900M300 0v900M450 0v900M600 0v900M750 0v900M900 0v900M1050 0v900"/>
+  </g>
+  <g fill="none" stroke="#c1c6c8" stroke-width="3">
+    <circle cx="430" cy="425" r="172"/>
+    <circle cx="430" cy="425" r="105" opacity=".5"/>
+    <path d="M255 620 785 210M564 645l310-228"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="430" cy="425" r="13"/>
+    <circle cx="785" cy="210" r="8"/>
+    <circle cx="874" cy="417" r="8"/>
+    <circle cx="564" cy="645" r="8"/>
+  </g>
+  <rect x="76" y="728" width="416" height="96" fill="#3f0f19" stroke="#c1c6c8" stroke-opacity=".35"/>
+  <text x="112" y="770" fill="#c1c6c8" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="4">IMAGE PLACEHOLDER</text>
+  <text x="112" y="800" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="16">Replace with verified lab or research photography</text>
+</svg>
