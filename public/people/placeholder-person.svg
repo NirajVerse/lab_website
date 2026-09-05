@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Profile photo placeholder</title>
+  <desc id="desc">A neutral geometric placeholder for a lab member profile photograph.</desc>
+  <rect width="800" height="800" fill="#f1f2f2"/>
+  <rect x="72" y="72" width="656" height="656" fill="none" stroke="#969a9c" stroke-width="2"/>
+  <circle cx="400" cy="326" r="132" fill="#c1c6c8"/>
+  <path d="M188 718c19-152 104-242 212-242s193 90 212 242" fill="#c1c6c8"/>
+  <text x="400" y="755" text-anchor="middle" fill="#55585a" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="4">REPLACE WITH PROFILE PHOTO</text>
+</svg>
