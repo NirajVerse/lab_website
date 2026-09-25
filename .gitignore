@@ -43,3 +43,6 @@ next-env.d.ts
 
 # original member submissions (approved copies live in public/people)
 /members_info/
+
+# private machine-learning model weights
+/ml_models/
