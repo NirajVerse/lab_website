@@ -1,4 +1,4 @@
-import { BookOpenText } from 'lucide-react';
+import { BookOpenText, ExternalLink } from 'lucide-react';
 
 import { Container } from '@/components/site/container';
 import { EmptyState } from '@/components/site/empty-state';
@@ -11,7 +11,7 @@ import { createPageMetadata } from '@/lib/metadata';
 
 export const metadata = createPageMetadata(
   'Publications',
-  `Browse journal articles, conference papers, workshop papers, posters, reports, theses, and preprints from ${siteConfig.labName}.`,
+  `Browse selected publications by Dr. Jason Tyler Street, principal investigator of ${siteConfig.labName}.`,
 );
 
 const publicationTypeLabels = {
@@ -28,9 +28,12 @@ export default function PublicationsPage() {
   const hasPlaceholderPublications = publications.some(
     (publication) => publication.isPlaceholder,
   );
-  const years = [...new Set(publications.map((publication) => publication.year))].sort(
-    (a, b) => b - a,
-  );
+  const years = [
+    ...new Set(publications.map((publication) => publication.year)),
+  ].sort((a, b) => b - a);
+  const publicationTypes = [
+    ...new Set(publications.map((publication) => publication.type)),
+  ];
 
   return (
     <main id="main-content">
@@ -38,33 +41,43 @@ export default function PublicationsPage() {
         eyebrow="Publications"
         title="Papers and scholarly outputs"
         description={
-          siteConfig.isTemplate
+          hasPlaceholderPublications
             ? 'Publications are grouped by year and read from a single typed data file. Add verified paper, code, dataset, DOI, or BibTeX links only when available.'
-            : 'Browse papers and scholarly outputs from the lab, grouped by year.'
+            : 'Selected publications by Dr. Jason Tyler Street, grouped by year.'
         }
       />
 
       <section className="border-b border-border py-10">
         <Container className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          {hasPlaceholderPublications ? (
-            <div className="flex items-start gap-3 text-sm leading-6 text-muted-foreground">
-              <BookOpenText
-                className="mt-0.5 size-5 shrink-0 text-primary"
-                aria-hidden="true"
-              />
+          <div className="flex items-start gap-3 text-sm leading-6 text-muted-foreground">
+            <BookOpenText
+              className="mt-0.5 size-5 shrink-0 text-primary"
+              aria-hidden="true"
+            />
+            {hasPlaceholderPublications ? (
               <p>
                 Placeholder citations are clearly marked and must be replaced or
                 removed before launch.
               </p>
-            </div>
-          ) : null}
-          <ul
-            className="flex flex-wrap gap-2"
-            aria-label="Supported publication types"
-          >
-            {Object.values(publicationTypeLabels).map((label) => (
-              <li key={label}>
-                <Tag>{label}</Tag>
+            ) : (
+              <p>
+                Source:{' '}
+                <a
+                  href="https://www.fwrc.msstate.edu/people/jts118"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 font-semibold text-primary underline underline-offset-4"
+                >
+                  Dr. Street’s official MSU profile
+                  <ExternalLink className="size-3.5" aria-hidden="true" />
+                </a>
+              </p>
+            )}
+          </div>
+          <ul className="flex flex-wrap gap-2" aria-label="Publication types">
+            {publicationTypes.map((type) => (
+              <li key={type}>
+                <Tag>{publicationTypeLabels[type]}</Tag>
               </li>
             ))}
           </ul>

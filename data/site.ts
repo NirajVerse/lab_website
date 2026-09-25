@@ -19,10 +19,10 @@ export const siteConfig: SiteConfig = {
   mission:
     'AIMS Lab at Mississippi State University develops computational and experimental methods for [PRIMARY RESEARCH AREAS].',
   email: '[LAB OR PROFESSOR EMAIL]',
-  location: '[BUILDING / CITY / STATE]',
-  building: '[BUILDING NAME]',
-  room: '[OFFICE / LAB ROOM]',
-  mailingAddress: '[MAILING ADDRESS]',
+  location: '201 Locksley Way, Starkville, MS 39759',
+  building: 'Forest Products Laboratory',
+  room: 'Building 4',
+  mailingAddress: 'P.O. Box 9820, Mississippi State, MS 39762',
   placeholderNotice:
     'Template content is shown throughout this site. Replace every bracketed field before publishing.',
 };

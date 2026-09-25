@@ -15,6 +15,12 @@ export const metadata = createPageMetadata(
 
 export default function ContactPage() {
   const hasRealEmail = !isPlaceholderValue(siteConfig.email);
+  const hasRealLocation = [
+    siteConfig.building,
+    siteConfig.room,
+    siteConfig.location,
+  ].every((value) => !isPlaceholderValue(value));
+  const hasRealMailingAddress = !isPlaceholderValue(siteConfig.mailingAddress);
 
   return (
     <main id="main-content">
@@ -90,7 +96,7 @@ export default function ContactPage() {
                 <br />
                 {siteConfig.location}
               </p>
-              {siteConfig.isTemplate ? (
+              {!hasRealLocation ? (
                 <p className="mt-3 text-sm leading-6 text-muted-foreground">
                   Add a public building and room number only when approved.
                 </p>
@@ -117,7 +123,7 @@ export default function ContactPage() {
               <p className="mt-4 text-sm leading-6 text-foreground">
                 {siteConfig.mailingAddress}
               </p>
-              {siteConfig.isTemplate ? (
+              {!hasRealMailingAddress ? (
                 <p className="mt-3 text-sm leading-6 text-muted-foreground">
                   Use the university’s public mailing address format.
                 </p>

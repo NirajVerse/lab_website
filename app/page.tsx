@@ -260,9 +260,11 @@ export default function Home() {
               eyebrow="Selected publications"
               title="Recent scholarly work"
               description={
-                siteConfig.isTemplate
+                featuredPublications.some(
+                  (publication) => publication.isPlaceholder,
+                )
                   ? 'Publication records are grouped and rendered from one typed data file, ready for verified citations and paper links.'
-                  : 'A selection of recent papers and scholarly outputs from the lab.'
+                  : 'A selection of recent publications by Dr. Jason Tyler Street.'
               }
             />
             {featuredPublications.some(
