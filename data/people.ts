@@ -42,7 +42,7 @@ export const people: Person[] = [
     title: 'Graduate Research Assistant · PhD in Sustainable Bioproducts',
     program: 'PhD in Sustainable Bioproducts, Department of Sustainable Bioproducts',
     image: '/people/tilak-neupane.png',
-    bio: 'Tilak Neupane is a second-year PhD student in the Department of Sustainable Bioproducts. His research applies machine learning and deep learning to assess wood properties, including wood chip moisture content and the mechanical properties of tree logs. He earned an MS in Forestry from the University of Georgia.',
+    bio: 'Tilak Neupane is a final-year PhD student in the Department of Sustainable Bioproducts. His research applies machine learning and deep learning to assess wood properties, including wood chip moisture content and the mechanical properties of tree logs. He earned an MS in Forestry from the University of Georgia.',
     researchInterests: [
       'Artificial intelligence and computer vision for wood quality assessment',
       'Moisture content prediction',
