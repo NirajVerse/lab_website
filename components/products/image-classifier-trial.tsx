@@ -195,13 +195,13 @@ export function ImageClassifierTrial({
     setPrediction(null);
     setError(null);
 
-    const formData = new FormData();
-    formData.append('file', file);
-
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': file.type,
+        },
+        body: file,
       });
       const payload: unknown = await response.json().catch(() => null);
 

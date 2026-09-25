@@ -2,7 +2,6 @@ import { env } from 'cloudflare:workers';
 
 const MODEL_API_ORIGIN = 'https://aims-model-api.vercel.app';
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
-const MAX_MULTIPART_BYTES = MAX_FILE_BYTES + 256 * 1024;
 const REQUEST_TIMEOUT_MS = 60_000;
 
 const allowedImageTypes = new Set(['image/jpeg', 'image/png', 'image/webp']);
@@ -109,46 +108,24 @@ export async function proxyImagePrediction(
   }
 
   const contentType = request.headers.get('content-type')?.toLowerCase() ?? '';
+  const normalizedType = contentType.split(';', 1)[0]?.trim() ?? '';
 
-  if (!contentType.startsWith('multipart/form-data;')) {
-    return jsonResponse(
-      { error: 'Upload an image using multipart form data.' },
-      415,
-    );
+  if (!allowedImageTypes.has(normalizedType)) {
+    return jsonResponse({ error: 'Upload a JPEG, PNG, or WebP image.' }, 415);
   }
 
   const contentLength = Number(request.headers.get('content-length'));
 
-  if (Number.isFinite(contentLength) && contentLength > MAX_MULTIPART_BYTES) {
+  if (Number.isFinite(contentLength) && contentLength > MAX_FILE_BYTES) {
     return jsonResponse({ error: 'The uploaded image is too large.' }, 413);
   }
 
-  let formData: FormData;
+  let file: Blob;
 
   try {
-    formData = await request.formData();
+    file = await request.blob();
   } catch {
     return jsonResponse({ error: 'The upload could not be read.' }, 400);
-  }
-
-  const uploadedFiles = [...formData.values()].filter(
-    (value): value is File => value instanceof File,
-  );
-  const fileValues = formData.getAll('file');
-
-  if (
-    uploadedFiles.length !== 1 ||
-    fileValues.length !== 1 ||
-    !(fileValues[0] instanceof File)
-  ) {
-    return jsonResponse({ error: 'Choose one image to classify.' }, 400);
-  }
-
-  const file = fileValues[0];
-  const normalizedType = file.type.split(';', 1)[0]?.trim().toLowerCase() ?? '';
-
-  if (!allowedImageTypes.has(normalizedType)) {
-    return jsonResponse({ error: 'Upload a JPEG, PNG, or WebP image.' }, 415);
   }
 
   if (file.size === 0) {
