@@ -40,3 +40,6 @@ next-env.d.ts
 
 # original user-supplied brand packages (approved copies live in public/brand)
 /logos/
+
+# original member submissions (approved copies live in public/people)
+/members_info/
