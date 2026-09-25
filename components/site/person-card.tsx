@@ -35,7 +35,7 @@ export function PersonCard({ person, featured = false }: PersonCardProps) {
       }
     >
       {person.image ? (
-        <div>
+        <div className={featured ? undefined : 'w-full sm:w-[13rem]'}>
           <div className="relative aspect-[4/5] overflow-hidden bg-muted">
             <Image
               src={person.image}
@@ -48,7 +48,7 @@ export function PersonCard({ person, featured = false }: PersonCardProps) {
               sizes={
                 featured
                   ? '208px'
-                  : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw'
+                  : '(max-width: 639px) 100vw, 208px'
               }
               className="object-cover object-top"
             />
