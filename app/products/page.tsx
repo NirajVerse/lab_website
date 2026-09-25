@@ -30,11 +30,7 @@ export default function ProductsPage() {
             <SectionHeading
               eyebrow="Model catalog"
               title="Research translated into usable products"
-              description={
-                siteConfig.isTemplate
-                  ? 'These entries establish the product catalog and trial experience. Replace them with verified model details and connect each reviewed public demo when it is ready.'
-                  : 'Choose a product to understand its purpose, review its capabilities, and open the live model experience.'
-              }
+              description="Try an available research prototype or review the spaces reserved for models and tools that are still being prepared for public use."
             />
             <div className="flex max-w-md items-start gap-3 border-l-2 border-accent pl-4 text-sm leading-6 text-muted-foreground">
               <MousePointerClick
@@ -42,8 +38,8 @@ export default function ProductsPage() {
                 aria-hidden="true"
               />
               <p>
-                A “Try this model” link appears only after a public trial has
-                been reviewed and connected.
+                Select “Try this model” to open an available trial, review its
+                limitations, and submit a supported input.
               </p>
             </div>
           </div>
@@ -87,12 +83,17 @@ export default function ProductsPage() {
                 'Use the verified trial link to interact with the product, then follow its citation and feedback guidance.',
               ],
             ].map(([title, description], index) => (
-              <li key={title} className="grid gap-4 py-6 sm:grid-cols-[3rem_1fr]">
+              <li
+                key={title}
+                className="grid gap-4 py-6 sm:grid-cols-[3rem_1fr]"
+              >
                 <span className="grid size-10 place-items-center bg-primary font-heading text-sm font-bold text-primary-foreground">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div>
-                  <h3 className="font-heading text-xl font-semibold">{title}</h3>
+                  <h3 className="font-heading text-xl font-semibold">
+                    {title}
+                  </h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
                     {description}
                   </p>
@@ -114,7 +115,7 @@ export default function ProductsPage() {
                 </p>
               </div>
               <h2 className="mt-4 font-heading text-3xl leading-tight font-semibold tracking-[-0.025em] sm:text-4xl">
-                Models will be added as trials become ready
+                Additional models will be added as trials become ready
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-7 text-primary-foreground/80">
                 Each release can include a public demo, usage notes,

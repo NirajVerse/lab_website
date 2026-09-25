@@ -1,21 +1,22 @@
 import type { Product } from '@/types';
 
-/**
- * Replace these placeholder records with verified AIMS Lab products.
- * A product becomes actionable only when a reviewed public demoUrl is present.
- */
 export const products: Product[] = [
   {
-    id: 'product-01',
-    name: '[AI MODEL / PRODUCT NAME 01]',
-    tagline: '[ONE-LINE DESCRIPTION OF WHAT THE MODEL HELPS A USER DO]',
+    id: 'syp-ro-classifier',
+    name: 'SYP–RO Image Classifier',
+    tagline: 'Classify an uploaded image as RO or SYP.',
     description:
-      'Replace this text with an accessible explanation of the model, its intended users, accepted inputs, and important limitations.',
-    category: '[MODEL TYPE]',
-    status: 'coming-soon',
-    capabilities: ['[CAPABILITY 01]', '[CAPABILITY 02]'],
-    version: '[VERSION]',
-    isPlaceholder: true,
+      'This research prototype analyzes one image at a time and returns the model’s predicted class and confidence scores. Its output is experimental and should be interpreted alongside domain expertise.',
+    category: 'Image classification',
+    status: 'available',
+    capabilities: [
+      'RO/SYP classification',
+      'Image upload',
+      'Confidence scores',
+    ],
+    version: '1.0',
+    demoUrl: '/products/syp-ro-classifier',
+    isPlaceholder: false,
   },
   {
     id: 'product-02',
