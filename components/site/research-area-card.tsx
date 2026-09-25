@@ -1,6 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
-import Link from 'next/link';
 
+import Link from '@/components/site/full-page-link';
 import { Tag } from '@/components/site/tag';
 import type { ResearchArea } from '@/types';
 

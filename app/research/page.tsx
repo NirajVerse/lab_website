@@ -1,9 +1,9 @@
 import { ArrowRight, CircleHelp, Wrench } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 import { Container } from '@/components/site/container';
 import { EmptyState } from '@/components/site/empty-state';
+import Link from '@/components/site/full-page-link';
 import { LinkButton } from '@/components/site/link-button';
 import { PageHero } from '@/components/site/page-hero';
 import { Tag } from '@/components/site/tag';

@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import type { ReactNode } from 'react';
 
+import Link from '@/components/site/full-page-link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 

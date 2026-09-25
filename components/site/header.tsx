@@ -1,10 +1,10 @@
 'use client';
 
 import { Menu } from 'lucide-react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { Container } from '@/components/site/container';
+import Link from '@/components/site/full-page-link';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,

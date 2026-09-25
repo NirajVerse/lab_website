@@ -1,8 +1,8 @@
 import { ArrowRight, CheckCircle2, MousePointerClick } from 'lucide-react';
-import Link from 'next/link';
 
 import { Container } from '@/components/site/container';
 import { EmptyState } from '@/components/site/empty-state';
+import Link from '@/components/site/full-page-link';
 import { PageHero } from '@/components/site/page-hero';
 import { ProductCard } from '@/components/site/product-card';
 import { SectionHeading } from '@/components/site/section-heading';

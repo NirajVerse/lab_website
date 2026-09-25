@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
 import { Container } from '@/components/site/container';
+import Link from '@/components/site/full-page-link';
 import { navigation, siteConfig } from '@/data/site';
 
 export function Footer() {

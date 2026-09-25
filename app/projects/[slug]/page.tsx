@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { Container } from '@/components/site/container';
+import Link from '@/components/site/full-page-link';
 import { PublicationItem } from '@/components/site/publication-item';
 import { Tag } from '@/components/site/tag';
 import { people } from '@/data/people';
