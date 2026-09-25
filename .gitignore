@@ -33,6 +33,7 @@ yarn-error.log*
 # deployment and generated files
 .vercel
 next-env.d.ts
+*.tsbuildinfo
 /dist/
 /.wrangler/
 /outputs/
@@ -46,3 +47,6 @@ next-env.d.ts
 
 # private machine-learning model weights
 /ml_models/
+
+# ONNX Runtime telemetry session file
+/:memory:.ses
