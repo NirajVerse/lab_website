@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 
+import { availableProducts } from '@/data/products';
 import { projects } from '@/data/projects';
 import { absoluteUrl } from '@/lib/metadata';
 
@@ -17,10 +18,21 @@ const staticRoutes = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const projectRoutes = projects.map((project) => `/projects/${project.slug}`);
+  const productRoutes = availableProducts.flatMap((product) =>
+    product.demoUrl ? [product.demoUrl] : [],
+  );
 
-  return [...staticRoutes, ...projectRoutes].map((route) => ({
+  return [...staticRoutes, ...projectRoutes, ...productRoutes].map((route) => ({
     url: absoluteUrl(route || '/'),
-    changeFrequency: route.startsWith('/projects/') ? 'monthly' : 'weekly',
-    priority: route === '' ? 1 : route.startsWith('/projects/') ? 0.7 : 0.8,
+    changeFrequency:
+      route.startsWith('/projects/') || route.startsWith('/products/')
+        ? 'monthly'
+        : 'weekly',
+    priority:
+      route === ''
+        ? 1
+        : route.startsWith('/projects/') || route.startsWith('/products/')
+          ? 0.7
+          : 0.8,
   }));
 }
