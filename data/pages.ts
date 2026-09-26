@@ -1,4 +1,4 @@
-import type { JoinPageContent, ResearchPageContent } from '@/types';
+import type { ResearchPageContent } from '@/types';
 
 export const researchPageContent: ResearchPageContent = {
   heroDescription:
@@ -15,20 +15,4 @@ export const researchPageContent: ResearchPageContent = {
       'We collaborate with companies to study where artificial intelligence and machine learning can support repeatable analysis, classification, and inspection. Drone-image classification is one example of the image-based problems addressed through this work.',
     ctaLabel: 'Discuss a research challenge',
   },
-};
-
-export const joinPageContent: JoinPageContent = {
-  heroDescription:
-    'Current opportunities vary by semester. This page provides a clear place for the lab to publish confirmed expectations and contact instructions without implying that positions or funding are available.',
-  opportunityStatus: '[NOT YET SUPPLIED]',
-  opportunityNote:
-    'Do not state that positions are open, funded, or guaranteed until the principal investigator has confirmed the wording for the current term.',
-  undergraduateOverview: [
-    '[EXPLAIN THE TYPICAL WAYS UNDERGRADUATE STUDENTS PARTICIPATE, INCLUDING INDEPENDENT STUDY, CAPSTONE WORK, OR PAID RESEARCH ONLY IF CONFIRMED.]',
-    '[ADD EXPECTED PREPARATION, RELEVANT COURSES, AND TIME COMMITMENT AFTER THE LAB HAS SUPPLIED THESE DETAILS.]',
-  ],
-  graduateOverview: [
-    '[DESCRIBE THE LAB’S GRADUATE RESEARCH AREAS AND THE TECHNICAL OR SCHOLARLY BACKGROUND MOST RELEVANT TO THEM.]',
-    '[EXPLAIN THE UNIVERSITY APPLICATION PATH AND WHETHER PROSPECTIVE STUDENTS SHOULD CONTACT THE PROFESSOR BEFORE APPLYING.]',
-  ],
 };

@@ -12,7 +12,6 @@ const staticRoutes = [
   '/products',
   '/publications',
   '/news',
-  '/join',
   '/contact',
 ];
 

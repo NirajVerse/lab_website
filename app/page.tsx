@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpenText, FlaskConical, Users } from 'lucide-react';
+import { ArrowRight, BookOpenText } from 'lucide-react';
 import Image from 'next/image';
 
 import { Container } from '@/components/site/container';
@@ -375,45 +375,6 @@ export default function Home() {
               />
             </div>
           )}
-        </Container>
-      </section>
-
-      <section className="border-t border-border py-8 sm:py-12">
-        <Container>
-          <div className="grid gap-10 bg-primary px-6 py-10 text-primary-foreground sm:px-10 sm:py-12 lg:grid-cols-[1fr_auto] lg:items-center lg:px-14">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-3 text-accent">
-                <Users className="size-5" aria-hidden="true" />
-                <p className="text-xs font-bold uppercase tracking-[0.2em]">
-                  Join the lab
-                </p>
-              </div>
-              <h2 className="mt-5 font-heading text-3xl leading-tight font-semibold tracking-[-0.025em] sm:text-4xl">
-                Interested in working with us?
-              </h2>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-primary-foreground/80">
-                Current opportunities vary by semester. Review the guidance for
-                undergraduate and graduate researchers before getting in touch.
-              </p>
-            </div>
-            <LinkButton
-              href="/join"
-              variant="secondary"
-              className="w-fit bg-primary-foreground text-primary hover:bg-primary-foreground/90 focus-visible:outline-primary-foreground"
-            >
-              View opportunities
-              <ArrowRight aria-hidden="true" />
-            </LinkButton>
-          </div>
-          {siteConfig.isTemplate ? (
-            <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-              <FlaskConical className="size-4" aria-hidden="true" />
-              <p>
-                No positions, funding, or availability are implied by this
-                template.
-              </p>
-            </div>
-          ) : null}
         </Container>
       </section>
     </main>

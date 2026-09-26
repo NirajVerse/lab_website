@@ -35,6 +35,5 @@ export const navigation: NavigationItem[] = [
   { label: 'Products', href: '/products' },
   { label: 'Publications', href: '/publications' },
   { label: 'News', href: '/news' },
-  { label: 'Join Us', href: '/join' },
   { label: 'Contact', href: '/contact' },
 ];

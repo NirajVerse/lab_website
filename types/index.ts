@@ -170,11 +170,3 @@ export interface ResearchPageContent {
     ctaLabel: string;
   };
 }
-
-export interface JoinPageContent {
-  heroDescription: string;
-  opportunityStatus?: string;
-  opportunityNote?: string;
-  undergraduateOverview: string[];
-  graduateOverview: string[];
-}

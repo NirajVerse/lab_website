@@ -28,7 +28,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title="Get in touch with the lab"
-        description="Use the confirmed public email and university address below. Prospective students should review the Join Us page before contacting the lab."
+        description="Use the confirmed public email and university address below for research, collaboration, and student inquiries."
       />
 
       <section className="py-20 sm:py-24">
@@ -152,11 +152,11 @@ export default function ContactPage() {
               and funding must be confirmed directly.
             </p>
             <LinkButton
-              href="/join"
+              href={`mailto:${siteConfig.email}`}
               variant="secondary"
               className="mt-8 bg-primary-foreground text-primary hover:bg-primary-foreground/90 focus-visible:outline-primary-foreground"
             >
-              Read application guidance
+              Email Dr. Street
             </LinkButton>
             <div className="mt-10 border-t border-primary-foreground/20 pt-7">
               <h3 className="text-sm font-bold">Collaborators and visitors</h3>

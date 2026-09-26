@@ -38,7 +38,7 @@ Most content changes require editing only one typed data file:
 | Content | File | What to update |
 | --- | --- | --- |
 | Lab name, affiliation wording, email, address, logo paths, and template mode | `data/site.ts` | Update `labName`, `shortName`, and `labExpansion` together if the provisional name changes; preserve the confirmed MSU affiliation and approved asset paths |
-| Research and Join Us page copy | `data/pages.ts` | Replace the research overview, collaboration note, opportunity status, and applicant guidance |
+| Research page copy | `data/pages.ts` | Update the research overview and collaboration note |
 | People and alumni | `data/people.ts` | Add or edit a `Person` record |
 | Research directions | `data/research.ts` | Add explanations, questions, methods, and related records |
 | Projects | `data/projects.ts` | Add project summaries, detail content, team IDs, and links |
