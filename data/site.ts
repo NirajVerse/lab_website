@@ -18,7 +18,7 @@ export const siteConfig: SiteConfig = {
     'AIMS Lab is a research laboratory in the Department of Sustainable Bioproducts at Mississippi State University. We develop applied artificial intelligence and machine-learning methods that help industry partners automate labor-intensive analysis, classification, and inspection tasks.',
   mission:
     'AIMS Lab partners with industry to develop practical artificial intelligence and machine-learning methods for automated analysis, image classification, materials assessment, and related research challenges.',
-  email: '[LAB OR PROFESSOR EMAIL]',
+  email: 'jts118@msstate.edu',
   location: '201 Locksley Way, Starkville, MS 39759',
   building: 'Forest Products Laboratory',
   room: 'Building 4',

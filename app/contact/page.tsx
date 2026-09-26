@@ -4,6 +4,7 @@ import { Container } from '@/components/site/container';
 import { LinkButton } from '@/components/site/link-button';
 import { PageHero } from '@/components/site/page-hero';
 import { Tag } from '@/components/site/tag';
+import { principalInvestigator } from '@/data/people';
 import { siteConfig } from '@/data/site';
 import { isPlaceholderValue } from '@/lib/content';
 import { createPageMetadata } from '@/lib/metadata';
@@ -38,13 +39,20 @@ export default function ContactPage() {
                 <Mail className="size-5" aria-hidden="true" />
               </div>
               <div className="mt-6 flex flex-wrap items-center gap-2">
-                <h2 className="font-heading text-2xl font-semibold">Email</h2>
+                <h2 className="font-heading text-2xl font-semibold">
+                  Lab inquiries
+                </h2>
                 {!hasRealEmail ? <Tag>Placeholder</Tag> : null}
               </div>
+              {hasRealEmail && principalInvestigator ? (
+                <p className="mt-4 text-sm font-semibold text-foreground">
+                  {principalInvestigator.name}
+                </p>
+              ) : null}
               {hasRealEmail ? (
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="mt-4 inline-block break-all text-sm font-semibold text-primary underline underline-offset-4"
+                  className="mt-2 inline-block break-all text-sm font-semibold text-primary underline underline-offset-4"
                 >
                   {siteConfig.email}
                 </a>
