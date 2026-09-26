@@ -29,28 +29,19 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/15 bg-primary text-primary-foreground">
-      <Container className="flex min-h-[6.5rem] items-center justify-between gap-4 py-3">
+      <Container className="flex min-h-[4.75rem] items-center justify-between gap-4 py-2.5">
         <Link
           href="/"
           className="group flex min-w-0 items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
           aria-label={`${siteConfig.labName} home`}
         >
-          <span
-            className="h-16 w-1 shrink-0 bg-accent"
-            aria-hidden="true"
-          />
+          <span className="h-11 w-1 shrink-0 bg-accent" aria-hidden="true" />
           <span className="min-w-0">
             <span className="block font-heading text-lg leading-none font-semibold tracking-[-0.02em] text-primary-foreground sm:text-xl">
               {siteConfig.shortName}
             </span>
             <span className="mt-1 block text-[0.7rem] leading-4 italic text-primary-foreground/85 sm:text-xs">
               {siteConfig.labExpansion}
-            </span>
-            <span className="block text-[0.7rem] leading-4 font-bold text-primary-foreground sm:text-xs">
-              {siteConfig.university}
-            </span>
-            <span className="block text-[0.62rem] leading-4 italic text-primary-foreground/70 sm:text-[0.68rem]">
-              {siteConfig.department}
             </span>
           </span>
         </Link>
@@ -96,15 +87,9 @@ export function Header() {
               <SheetTitle className="font-heading text-xl font-semibold">
                 {siteConfig.shortName}
               </SheetTitle>
-              <SheetDescription className="space-y-0.5">
+              <SheetDescription>
                 <span className="block italic text-foreground">
                   {siteConfig.labExpansion}
-                </span>
-                <span className="block font-semibold text-primary">
-                  {siteConfig.university}
-                </span>
-                <span className="block text-xs italic">
-                  {siteConfig.department}
                 </span>
               </SheetDescription>
             </SheetHeader>
