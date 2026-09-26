@@ -35,16 +35,20 @@ export const products: Product[] = [
     isPlaceholder: false,
   },
   {
-    id: 'product-03',
-    name: '[AI MODEL / PRODUCT NAME 03]',
-    tagline: '[ONE-LINE DESCRIPTION OF THE THIRD PRODUCT]',
+    id: 'wood-chip-moisture-estimator',
+    name: 'Wood Chip Moisture Content Estimator',
+    tagline: 'Estimate wood-chip moisture content from one uploaded image.',
     description:
-      'Use this record for another model, application, or research prototype that visitors will be able to try.',
-    category: '[MODEL TYPE]',
-    status: 'coming-soon',
-    capabilities: ['[CAPABILITY 01]', '[CAPABILITY 02]'],
-    version: '[VERSION]',
-    isPlaceholder: true,
+      'This research prototype analyzes a wood-chip image and returns a predicted moisture content percentage. Its output is an experimental model estimate, not a laboratory measurement.',
+    category: 'Moisture estimation',
+    status: 'available',
+    capabilities: [
+      'Image-based regression',
+      'Moisture percentage estimate',
+      'Image upload',
+    ],
+    demoUrl: '/products/wood-chip-moisture-estimator',
+    isPlaceholder: false,
   },
 ];
 

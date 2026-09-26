@@ -4,6 +4,7 @@ import { ImageUp, LoaderCircle, RotateCcw } from 'lucide-react';
 import Image from 'next/image';
 import {
   type ChangeEvent,
+  type ReactNode,
   type SyntheticEvent,
   useEffect,
   useRef,
@@ -27,10 +28,32 @@ interface ImageClassifierTrialProps {
   classes: readonly ClassDefinition[];
 }
 
+interface ImageRegressionTrialProps {
+  endpoint: string;
+  inputId: string;
+  instructions: string;
+}
+
+interface ImageTrialProps<Result> {
+  endpoint: string;
+  inputId: string;
+  instructions: string;
+  submitLabel: string;
+  submittingLabel: string;
+  failureMessage: string;
+  parseResult: (value: unknown) => Result | null;
+  renderResult: (result: Result) => ReactNode;
+}
+
 interface PredictionResult {
   predicted_class: string;
   confidence: number;
   probabilities: Record<string, number>;
+}
+
+interface MoisturePredictionResult {
+  predicted_moisture_percent: number;
+  unit: 'percent';
 }
 
 const percentFormatter = new Intl.NumberFormat('en-US', {
@@ -90,6 +113,28 @@ function parsePredictionResult(
   };
 }
 
+function parseMoisturePredictionResult(
+  value: unknown,
+): MoisturePredictionResult | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  const record = value as Record<string, unknown>;
+  if (
+    typeof record.predicted_moisture_percent !== 'number' ||
+    !Number.isFinite(record.predicted_moisture_percent) ||
+    record.unit !== 'percent'
+  ) {
+    return null;
+  }
+
+  return {
+    predicted_moisture_percent: record.predicted_moisture_percent,
+    unit: 'percent',
+  };
+}
+
 function getErrorMessage(value: unknown) {
   if (!value || typeof value !== 'object') {
     return null;
@@ -105,9 +150,56 @@ export function ImageClassifierTrial({
   instructions,
   classes,
 }: ImageClassifierTrialProps) {
+  return (
+    <ImageTrial
+      endpoint={endpoint}
+      inputId={inputId}
+      instructions={instructions}
+      submitLabel="Classify image"
+      submittingLabel="Classifying…"
+      failureMessage="The image could not be classified. Try again."
+      parseResult={(value) => parsePredictionResult(value, classes)}
+      renderResult={(prediction) => (
+        <PredictionPanel prediction={prediction} classes={classes} />
+      )}
+    />
+  );
+}
+
+export function ImageRegressionTrial({
+  endpoint,
+  inputId,
+  instructions,
+}: ImageRegressionTrialProps) {
+  return (
+    <ImageTrial
+      endpoint={endpoint}
+      inputId={inputId}
+      instructions={instructions}
+      submitLabel="Estimate moisture"
+      submittingLabel="Estimating…"
+      failureMessage="The moisture content could not be estimated. Try again."
+      parseResult={parseMoisturePredictionResult}
+      renderResult={(prediction) => (
+        <MoisturePredictionPanel prediction={prediction} />
+      )}
+    />
+  );
+}
+
+function ImageTrial<Result>({
+  endpoint,
+  inputId,
+  instructions,
+  submitLabel,
+  submittingLabel,
+  failureMessage,
+  parseResult,
+  renderResult,
+}: ImageTrialProps<Result>) {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [prediction, setPrediction] = useState<PredictionResult | null>(null);
+  const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -135,7 +227,7 @@ export function ImageClassifierTrial({
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0] ?? null;
 
-    setPrediction(null);
+    setResult(null);
     setError(null);
 
     if (!selectedFile) {
@@ -175,7 +267,7 @@ export function ImageClassifierTrial({
   function resetTrial() {
     setFile(null);
     replacePreview(null);
-    setPrediction(null);
+    setResult(null);
     setError(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -192,7 +284,7 @@ export function ImageClassifierTrial({
     }
 
     setIsSubmitting(true);
-    setPrediction(null);
+    setResult(null);
     setError(null);
 
     try {
@@ -206,21 +298,18 @@ export function ImageClassifierTrial({
       const payload: unknown = await response.json().catch(() => null);
 
       if (!response.ok) {
-        throw new Error(
-          getErrorMessage(payload) ??
-            'The image could not be classified. Try again.',
-        );
+        throw new Error(getErrorMessage(payload) ?? failureMessage);
       }
 
-      const parsedPrediction = parsePredictionResult(payload, classes);
+      const parsedResult = parseResult(payload);
 
-      if (!parsedPrediction) {
+      if (!parsedResult) {
         throw new Error(
           'The prediction service returned an unexpected response.',
         );
       }
 
-      setPrediction(parsedPrediction);
+      setResult(parsedResult);
     } catch (caughtError) {
       setError(
         caughtError instanceof Error
@@ -319,13 +408,13 @@ export function ImageClassifierTrial({
             {isSubmitting ? (
               <>
                 <LoaderCircle className="animate-spin" aria-hidden="true" />
-                Classifying…
+                {submittingLabel}
               </>
             ) : (
-              'Classify image'
+              submitLabel
             )}
           </Button>
-          {file || prediction || error ? (
+          {file || result || error ? (
             <Button
               type="button"
               variant="outline"
@@ -358,9 +447,7 @@ export function ImageClassifierTrial({
           </div>
         ) : null}
 
-        {prediction ? (
-          <PredictionPanel prediction={prediction} classes={classes} />
-        ) : null}
+        {result ? renderResult(result) : null}
       </div>
     </div>
   );
@@ -427,6 +514,38 @@ function PredictionPanel({
           })}
         </ul>
       </div>
+    </section>
+  );
+}
+
+const moistureFormatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+
+function MoisturePredictionPanel({
+  prediction,
+}: {
+  prediction: MoisturePredictionResult;
+}) {
+  return (
+    <section className="border-t-4 border-primary bg-secondary/60 p-5 sm:p-7">
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+        Estimate complete
+      </p>
+      <div className="mt-4">
+        <h3 className="font-heading text-4xl font-semibold tracking-[-0.02em] text-primary sm:text-5xl">
+          {moistureFormatter.format(prediction.predicted_moisture_percent)}%
+        </h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Estimated wood-chip moisture content
+        </p>
+      </div>
+      <p className="mt-6 border-t border-border pt-5 text-sm leading-6 text-muted-foreground">
+        This is the model’s direct regression output, not a laboratory moisture
+        measurement. Interpret it alongside appropriate sampling and domain
+        expertise.
+      </p>
     </section>
   );
 }

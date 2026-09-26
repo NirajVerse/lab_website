@@ -18,15 +18,25 @@ const responseHeaders = {
   'X-Content-Type-Options': 'nosniff',
 };
 
-interface PredictionProxyConfig {
+interface ClassificationPredictionProxyConfig {
   upstreamPath: `/${string}`;
   labels: readonly string[];
+}
+
+interface ImageModelProxyConfig<T> {
+  upstreamPath: `/${string}`;
+  parsePayload: (value: unknown) => T | null;
 }
 
 interface PredictionPayload {
   predicted_class: string;
   confidence: number;
   probabilities: Record<string, number>;
+}
+
+interface MoisturePredictionPayload {
+  predicted_moisture_percent: number;
+  unit: 'percent';
 }
 
 function jsonResponse(body: unknown, status = 200) {
@@ -43,6 +53,10 @@ function isProbability(value: unknown): value is number {
     value >= 0 &&
     value <= 1
   );
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value);
 }
 
 function parsePredictionPayload(
@@ -84,6 +98,27 @@ function parsePredictionPayload(
   };
 }
 
+function parseMoisturePredictionPayload(
+  value: unknown,
+): MoisturePredictionPayload | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  const record = value as Record<string, unknown>;
+  if (
+    !isFiniteNumber(record.predicted_moisture_percent) ||
+    record.unit !== 'percent'
+  ) {
+    return null;
+  }
+
+  return {
+    predicted_moisture_percent: record.predicted_moisture_percent,
+    unit: 'percent',
+  };
+}
+
 function getApiKey() {
   const bindings = env as typeof env & { AIMS_API_KEY?: string };
   const key = bindings.AIMS_API_KEY ?? process.env.AIMS_API_KEY;
@@ -96,9 +131,9 @@ function isSameOriginRequest(request: Request) {
   return !origin || origin === new URL(request.url).origin;
 }
 
-export async function proxyImagePrediction(
+async function proxyImageModelRequest<T>(
   request: Request,
-  config: PredictionProxyConfig,
+  config: ImageModelProxyConfig<T>,
 ) {
   if (!isSameOriginRequest(request)) {
     return jsonResponse(
@@ -221,7 +256,7 @@ export async function proxyImagePrediction(
     );
   }
 
-  const prediction = parsePredictionPayload(payload, config.labels);
+  const prediction = config.parsePayload(payload);
 
   if (!prediction) {
     return jsonResponse(
@@ -231,4 +266,21 @@ export async function proxyImagePrediction(
   }
 
   return jsonResponse(prediction);
+}
+
+export function proxyImagePrediction(
+  request: Request,
+  config: ClassificationPredictionProxyConfig,
+) {
+  return proxyImageModelRequest(request, {
+    upstreamPath: config.upstreamPath,
+    parsePayload: (value) => parsePredictionPayload(value, config.labels),
+  });
+}
+
+export function proxyMoisturePrediction(request: Request) {
+  return proxyImageModelRequest(request, {
+    upstreamPath: '/models/wood-chip-moisture/predict',
+    parsePayload: parseMoisturePredictionPayload,
+  });
 }

@@ -30,7 +30,7 @@ export default function ProductsPage() {
             <SectionHeading
               eyebrow="Model catalog"
               title="Research translated into usable products"
-              description="Try an available research prototype or review the spaces reserved for models and tools that are still being prepared for public use."
+              description="Try available research prototypes and review their intended uses, outputs, and limitations."
             />
             <div className="flex max-w-md items-start gap-3 border-l-2 border-accent pl-4 text-sm leading-6 text-muted-foreground">
               <MousePointerClick

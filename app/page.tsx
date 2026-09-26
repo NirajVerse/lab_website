@@ -138,11 +138,7 @@ export default function Home() {
             <SectionHeading
               eyebrow="Products"
               title="AI models people can explore and try"
-              description={
-                siteConfig.isTemplate
-                  ? 'This catalog is ready for verified AIMS Lab models, research prototypes, public trial links, documentation, and version information.'
-                  : 'Explore public models and software products developed from the lab’s research.'
-              }
+              description="Explore public models and software products developed from the lab’s research."
             />
             <Link
               href="/products"
