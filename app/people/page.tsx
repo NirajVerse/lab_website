@@ -63,11 +63,7 @@ export default function PeoplePage() {
       <PageHero
         eyebrow="People"
         title="Researchers, students, and collaborators"
-        description={
-          siteConfig.isTemplate
-            ? 'Profiles are organized by role and only display fields that have been supplied. Replace each placeholder record with a real lab member or remove it.'
-            : 'Meet the faculty, staff, students, and alumni who make up the lab’s research community.'
-        }
+        description="Meet the faculty, students, and alumni who make up the lab’s research community."
       />
 
       {populatedSections.length ? (

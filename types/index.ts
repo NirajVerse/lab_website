@@ -55,6 +55,7 @@ export interface Person {
   title?: string;
   program?: string;
   image?: string;
+  imageAlt?: string;
   bio?: string;
   researchInterests?: string[];
   education?: string[];

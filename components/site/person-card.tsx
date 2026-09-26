@@ -40,16 +40,13 @@ export function PersonCard({ person, featured = false }: PersonCardProps) {
             <Image
               src={person.image}
               alt={
-                person.isPlaceholder
+                person.imageAlt ??
+                (person.isPlaceholder
                   ? `Profile placeholder for ${person.name}`
-                  : `${person.name}${person.title ? `, ${person.title}` : ''}`
+                  : `${person.name}${person.title ? `, ${person.title}` : ''}`)
               }
               fill
-              sizes={
-                featured
-                  ? '208px'
-                  : '(max-width: 639px) 100vw, 208px'
-              }
+              sizes={featured ? '208px' : '(max-width: 639px) 100vw, 208px'}
               className="object-cover object-top"
             />
           </div>
@@ -75,7 +72,7 @@ export function PersonCard({ person, featured = false }: PersonCardProps) {
         <h3 className="mt-4 font-heading text-2xl leading-tight font-semibold tracking-[-0.02em]">
           {person.name}
         </h3>
-        {person.title ?? person.program ? (
+        {(person.title ?? person.program) ? (
           <p className="mt-2 text-sm font-semibold text-primary">
             {person.title ?? person.program}
           </p>
@@ -86,7 +83,10 @@ export function PersonCard({ person, featured = false }: PersonCardProps) {
           </p>
         ) : null}
         {person.researchInterests?.length ? (
-          <ul className="mt-4 flex flex-wrap gap-2" aria-label="Research interests">
+          <ul
+            className="mt-4 flex flex-wrap gap-2"
+            aria-label="Research interests"
+          >
             {person.researchInterests.map((interest) => (
               <li key={interest}>
                 <Tag>{interest}</Tag>
@@ -97,7 +97,10 @@ export function PersonCard({ person, featured = false }: PersonCardProps) {
         {featured && person.education?.length ? (
           <div className="mt-5 border-t border-border pt-5">
             <h4 className="flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              <GraduationCap className="size-4 text-primary" aria-hidden="true" />
+              <GraduationCap
+                className="size-4 text-primary"
+                aria-hidden="true"
+              />
               Education
             </h4>
             <ul className="mt-3 space-y-1.5 text-xs leading-5 text-muted-foreground">
