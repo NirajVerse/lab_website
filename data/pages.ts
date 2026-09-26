@@ -2,18 +2,18 @@ import type { JoinPageContent, ResearchPageContent } from '@/types';
 
 export const researchPageContent: ResearchPageContent = {
   heroDescription:
-    'Replace this introduction with a clear overview of the lab’s research agenda, the shared questions across its projects, and the contribution it seeks to make.',
+    'AIMS Lab develops practical artificial intelligence and machine-learning methods for industry and materials research, with work spanning visual classification, bioproducts, transport modeling, and renewable energy systems.',
   frameworkLabel: 'Research framework',
   framework: [
-    'Use this space to explain how the lab’s research areas relate to one another. The goal is to help readers understand the program as a whole before they explore individual themes.',
-    'Keep the final version grounded in confirmed work. Name real questions, methods, collaborations, and application domains only after the lab has supplied and reviewed them.',
+    'Our research begins with scientific and industrial problems that depend on time-intensive manual analysis. We work with industry partners to translate those challenges into rigorous machine-learning and computational research questions.',
+    'Across our projects, we connect artificial intelligence and computer vision with domain knowledge in bioproducts and engineered wood, including image classification, moisture and thermal transport, and renewable and alternative energy systems.',
   ],
   collaboration: {
-    eyebrow: 'Collaboration and facilities',
-    title: '[COLLABORATION OR FACILITIES NOTE]',
+    eyebrow: 'Industry collaboration',
+    title: 'From labor-intensive workflows to practical research tools',
     description:
-      'Replace this section with verified information about interdisciplinary collaboration, shared facilities, field sites, or research infrastructure. Remove it if no public note is needed.',
-    ctaLabel: 'Discuss collaboration',
+      'We collaborate with companies to study where artificial intelligence and machine learning can support repeatable analysis, classification, and inspection. Drone-image classification is one example of the image-based problems addressed through this work.',
+    ctaLabel: 'Discuss a research challenge',
   },
 };
 

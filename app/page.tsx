@@ -50,34 +50,32 @@ export default function Home() {
                 Meet the team
               </LinkButton>
             </div>
-            {siteConfig.isTemplate ? (
-              <dl className="mt-12 grid max-w-xl grid-cols-2 gap-px border border-border bg-border sm:grid-cols-3">
-                <div className="bg-background px-4 py-4">
-                  <dt className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-muted-foreground">
-                    Primary research
-                  </dt>
-                  <dd className="mt-2 text-xs font-bold uppercase tracking-[0.1em] text-foreground">
-                    [TO BE SUPPLIED]
-                  </dd>
-                </div>
-                <div className="bg-background px-4 py-4">
-                  <dt className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-muted-foreground">
-                    Academic home
-                  </dt>
-                  <dd className="mt-2 text-xs font-bold uppercase tracking-[0.1em] text-foreground">
-                    {siteConfig.university}
-                  </dd>
-                </div>
-                <div className="col-span-2 bg-background px-4 py-4 sm:col-span-1">
-                  <dt className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-muted-foreground">
-                    Content status
-                  </dt>
-                  <dd className="mt-2 text-xs font-bold uppercase tracking-[0.12em] text-primary">
-                    Placeholder
-                  </dd>
-                </div>
-              </dl>
-            ) : null}
+            <dl className="mt-12 grid max-w-xl grid-cols-2 gap-px border border-border bg-border sm:grid-cols-3">
+              <div className="bg-background px-4 py-4">
+                <dt className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-muted-foreground">
+                  Primary research
+                </dt>
+                <dd className="mt-2 text-xs font-bold uppercase tracking-[0.1em] text-foreground">
+                  Applied AI &amp; machine learning
+                </dd>
+              </div>
+              <div className="bg-background px-4 py-4">
+                <dt className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-muted-foreground">
+                  Academic home
+                </dt>
+                <dd className="mt-2 text-xs font-bold uppercase tracking-[0.1em] text-foreground">
+                  {siteConfig.university}
+                </dd>
+              </div>
+              <div className="col-span-2 bg-background px-4 py-4 sm:col-span-1">
+                <dt className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-muted-foreground">
+                  Applications
+                </dt>
+                <dd className="mt-2 text-xs font-bold uppercase tracking-[0.12em] text-primary">
+                  Industry &amp; materials research
+                </dd>
+              </div>
+            </dl>
           </div>
 
           <div className="relative min-h-[32rem] overflow-hidden bg-primary lg:min-h-[44rem]">
@@ -177,11 +175,7 @@ export default function Home() {
             <SectionHeading
               eyebrow="Research directions"
               title="Questions that organize our work"
-              description={
-                siteConfig.isTemplate
-                  ? 'Each theme below is a structured placeholder. Replace it with a major, established direction from the lab’s actual research program.'
-                  : 'Explore the major themes, questions, and methods that connect the lab’s research program.'
-              }
+              description="Explore the major themes, questions, and methods that connect the lab’s research program."
             />
             <Link
               href="/research"
