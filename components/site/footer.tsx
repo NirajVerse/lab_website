@@ -79,10 +79,9 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10">
         <Container className="flex flex-col gap-3 py-5 text-xs leading-5 text-primary-foreground/75 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {siteConfig.labName}.</p>
-          {siteConfig.isTemplate ? (
-            <p>Replace placeholder content before public release.</p>
-          ) : null}
+          <p>
+            © {new Date().getFullYear()} {siteConfig.labName}.
+          </p>
         </Container>
       </div>
     </footer>
