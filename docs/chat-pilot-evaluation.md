@@ -39,6 +39,7 @@ An answer passes when it:
 6. **Who leads AIMS Lab, and what is his role?**
    - Expected: Dr. Jason Tyler Street; principal investigator, Interim Head, and Associate Professor.
    - Expected source: `/people`.
+   - Short-query checks: repeat with “Who is the lead?” and “Who is the professor working here?”; both should retrieve the same approved profile instead of returning the unavailable-information response.
 
 7. **Who are the current student researchers?**
    - Expected: Tilak Neupane, Benjamin Wiley, Madeline Gnann, Bibek Bhatta, and Quinton Wiley. Ethan Turo must not be listed as current.

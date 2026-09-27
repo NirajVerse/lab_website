@@ -140,11 +140,13 @@ export async function answerLabQuestion(
         ],
         ai_search_options: {
           retrieval: {
-            match_threshold: 0.5,
+            match_threshold: 0.4,
             max_num_results: 5,
             context_expansion: 1,
             return_on_failure: false,
           },
+          // Avoid reusing a stale fallback while the pilot is being evaluated.
+          cache: { enabled: false },
         },
       }),
     );
