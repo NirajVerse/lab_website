@@ -31,20 +31,58 @@ Preview the production worker after a successful build:
 npm start
 ```
 
+## AIMS Lab assistant pilot
+
+The floating “Ask AIMS Lab” window is a removable RAG pilot backed by Cloudflare AI Search. The browser sends only the current question to the same-origin `/api/chat` route; earlier messages remain display-only so a visitor cannot forge prior assistant instructions. The Worker queries a single AI Search instance through the `AIMS_SEARCH` binding, and the browser never receives Cloudflare credentials.
+
+### Approved knowledge
+
+`knowledge/aims-lab-public.md` is the pilot's only approved knowledge source. It contains the public lab overview, research areas, people and alumni, publications, products, contact information, and approved FAQ. It intentionally excludes placeholder projects and news, credentials, model weights, source code, training data, private partners, and unpublished results.
+
+Review this file before every upload. When website facts change, update the relevant typed data file and the knowledge file together, update its `last_reviewed` date, and repeat the evaluation in `docs/chat-pilot-evaluation.md`.
+
+### Cloudflare AI Search setup
+
+Create the external resource before deploying a commit that contains the binding:
+
+1. In the Cloudflare dashboard, open **AI > AI Search** and create an instance named exactly `aims-lab-public`.
+2. Use the instance's built-in storage. Do not connect the whole website as a crawler for this pilot.
+3. Open the instance's **Items** tab and upload `knowledge/aims-lab-public.md`.
+4. Wait until indexing completes, then use the **Playground > Chat** view to test representative questions from `docs/chat-pilot-evaluation.md`.
+5. Keep the AI Search public endpoint disabled. The website uses the private Worker binding declared in `vite.config.ts`.
+6. Deploy the website. Confirm that the generated Worker has an AI Search binding named `AIMS_SEARCH` connected to `aims-lab-public` and a rate-limit binding named `AIMS_CHAT_RATE_LIMITER`.
+7. Test the published chat with the factual, unavailable-information, and private-information questions in the evaluation checklist.
+
+No ChromaDB, D1 database, separate R2 bucket, browser-visible API key, environment secret, or additional npm package is required for this pilot. Cloudflare's generation model and retrieval settings can be changed in the AI Search instance without changing the browser interface.
+
+The Worker rate-limit binding permits 12 accepted chat requests per connecting IP during each 60-second window at a Cloudflare location. The limiter is an abuse guard, not an exact billing ceiling: Cloudflare documents it as permissive, eventually consistent, and local to each Cloudflare location. The route fails closed before making an AI request if the limiter is unavailable. During the pilot, monitor Workers logs and AI usage; add Cloudflare Turnstile or stricter WAF controls if abuse appears.
+
+### Disable or remove the pilot
+
+For an immediate code-level rollback, set `enabled` to `false` in `data/chat.ts` and redeploy. This hides the chat window and makes `/api/chat` return a disabled response while leaving the rest of the website unchanged.
+
+For complete removal:
+
+1. Remove the `LabChat` import and render line from `app/layout.tsx`.
+2. Delete `components/chat/`, `app/api/chat/`, `lib/server/rag-chat.ts`, `types/chat.ts`, `data/chat.ts`, `knowledge/`, and `docs/chat-pilot-evaluation.md`.
+3. Remove the `ai_search` and `ratelimits` bindings from `vite.config.ts`.
+4. Deploy that removal and confirm the replacement Worker is healthy.
+5. Only after the binding-free deployment succeeds, delete the `aims-lab-public` instance from Cloudflare. The rate-limit binding has no separate dashboard resource to delete.
+
 ## Content updates
 
 Most content changes require editing only one typed data file:
 
-| Content | File | What to update |
-| --- | --- | --- |
-| Lab name, affiliation wording, email, address, logo paths, and template mode | `data/site.ts` | Update `labName`, `shortName`, and `labExpansion` together if the provisional name changes; preserve the confirmed MSU affiliation and approved asset paths |
-| Research page copy | `data/pages.ts` | Update the research overview and collaboration note |
-| People and alumni | `data/people.ts` | Add or edit a `Person` record |
-| Research directions | `data/research.ts` | Add explanations, questions, methods, and related records |
-| Projects | `data/projects.ts` | Add project summaries, detail content, team IDs, and links |
-| AI products and model trials | `data/products.ts` | Add verified product details and a public `demoUrl` only when a model trial is ready |
-| Publications | `data/publications.ts` | Add verified citations and optional paper/code/data links |
-| News | `data/news.ts` | Add confirmed updates in newest-first order |
+| Content                                                                      | File                   | What to update                                                                                                                                              |
+| ---------------------------------------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lab name, affiliation wording, email, address, logo paths, and template mode | `data/site.ts`         | Update `labName`, `shortName`, and `labExpansion` together if the provisional name changes; preserve the confirmed MSU affiliation and approved asset paths |
+| Research page copy                                                           | `data/pages.ts`        | Update the research overview and collaboration note                                                                                                         |
+| People and alumni                                                            | `data/people.ts`       | Add or edit a `Person` record                                                                                                                               |
+| Research directions                                                          | `data/research.ts`     | Add explanations, questions, methods, and related records                                                                                                   |
+| Projects                                                                     | `data/projects.ts`     | Add project summaries, detail content, team IDs, and links                                                                                                  |
+| AI products and model trials                                                 | `data/products.ts`     | Add verified product details and a public `demoUrl` only when a model trial is ready                                                                        |
+| Publications                                                                 | `data/publications.ts` | Add verified citations and optional paper/code/data links                                                                                                   |
+| News                                                                         | `data/news.ts`         | Add confirmed updates in newest-first order                                                                                                                 |
 
 Shared TypeScript models live in `types/index.ts`. Type checking will catch missing required fields and unsupported values.
 
