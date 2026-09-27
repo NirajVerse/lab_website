@@ -69,7 +69,9 @@ async function checkRateLimit(request: Request) {
     request.headers.get('cf-connecting-ip')?.trim() || 'local-development';
 
   try {
-    return await rateLimiter.limit({ key: `chat:${clientIdentifier}` });
+    return await rateLimiter.limit({
+      key: `aims-chat:v1:${clientIdentifier}`,
+    });
   } catch {
     throw new LabChatServiceError(
       'The lab assistant is temporarily unavailable. Please try again later.',
