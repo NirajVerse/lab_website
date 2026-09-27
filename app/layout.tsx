@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 
+import { LabChat } from '@/components/chat/lab-chat';
 import { Footer } from '@/components/site/footer';
 import { Header } from '@/components/site/header';
+import { chatConfig } from '@/data/chat';
 import { siteConfig } from '@/data/site';
 import { absoluteUrl, siteUrl } from '@/lib/metadata';
 
@@ -62,6 +64,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        {chatConfig.enabled ? <LabChat /> : null}
       </body>
     </html>
   );
