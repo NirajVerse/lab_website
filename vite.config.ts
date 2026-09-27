@@ -32,6 +32,13 @@ const localBindingConfig = {
         },
       ]
     : [],
+  ai_search: [
+    {
+      binding: 'AIMS_SEARCH',
+      instance_name: 'aims-lab-public',
+      remote: true,
+    },
+  ],
 };
 
 export default defineConfig(async () => {
