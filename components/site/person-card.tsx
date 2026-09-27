@@ -61,7 +61,7 @@ export function PersonCard({ person, featured = false }: PersonCardProps) {
         className={
           featured
             ? person.image
-              ? 'self-center'
+              ? 'min-w-0 self-start'
               : undefined
             : `flex flex-1 flex-col ${person.image ? 'pt-5' : ''}`
         }
