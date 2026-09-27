@@ -13,9 +13,8 @@ export const chatConfig = {
     'How can I contact the lab?',
   ],
   disclaimer:
-    'Pilot assistant. Answers are generated from approved public lab information and may be incomplete.',
+    'Public-information pilot. Do not submit personal, confidential, proprietary, or unpublished information. Answers may be incomplete.',
   unavailableAnswer:
     'I could not find that information in the approved public AIMS Lab materials. Please use the Contact page if you need help from the lab.',
   maxQuestionLength: 800,
-  maxHistoryMessages: 8,
 } as const;

@@ -1,13 +1,5 @@
-export type LabChatRole = 'user' | 'assistant';
-
-export interface LabChatMessage {
-  role: LabChatRole;
-  content: string;
-}
-
 export interface LabChatRequest {
   question: string;
-  history?: LabChatMessage[];
 }
 
 export interface LabChatSource {

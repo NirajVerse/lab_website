@@ -1,13 +1,10 @@
+import { env } from 'cloudflare:workers';
+
 import { chatConfig } from '@/data/chat';
 import { answerLabQuestion, LabChatServiceError } from '@/lib/server/rag-chat';
-import type {
-  LabChatErrorResponse,
-  LabChatMessage,
-  LabChatRequest,
-} from '@/types/chat';
+import type { LabChatErrorResponse, LabChatRequest } from '@/types/chat';
 
 const MAX_REQUEST_BYTES = 16 * 1024;
-const MAX_HISTORY_MESSAGE_LENGTH = 1_200;
 
 const responseHeaders = {
   'Cache-Control': 'no-store, max-age=0',
@@ -15,10 +12,14 @@ const responseHeaders = {
   'X-Content-Type-Options': 'nosniff',
 };
 
-function jsonResponse(body: unknown, status = 200) {
+function jsonResponse(
+  body: unknown,
+  status = 200,
+  extraHeaders: Record<string, string> = {},
+) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: responseHeaders,
+    headers: { ...responseHeaders, ...extraHeaders },
   });
 }
 
@@ -32,64 +33,49 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
 
-function parseHistory(value: unknown): LabChatMessage[] | null {
-  if (value === undefined) {
-    return [];
-  }
-
-  if (!Array.isArray(value) || value.length > chatConfig.maxHistoryMessages) {
-    return null;
-  }
-
-  const history: LabChatMessage[] = [];
-
-  for (const item of value) {
-    if (!isRecord(item)) {
-      return null;
-    }
-
-    const role = item.role;
-    const content = item.content;
-
-    if (
-      (role !== 'user' && role !== 'assistant') ||
-      typeof content !== 'string'
-    ) {
-      return null;
-    }
-
-    const normalizedContent = content.trim();
-
-    if (
-      !normalizedContent ||
-      normalizedContent.length > MAX_HISTORY_MESSAGE_LENGTH
-    ) {
-      return null;
-    }
-
-    history.push({ role, content: normalizedContent });
-  }
-
-  return history;
-}
-
 function parseRequest(value: unknown): LabChatRequest | null {
   if (!isRecord(value) || typeof value.question !== 'string') {
     return null;
   }
 
   const question = value.question.trim();
-  const history = parseHistory(value.history);
 
-  if (
-    !question ||
-    question.length > chatConfig.maxQuestionLength ||
-    history === null
-  ) {
+  if (!question || question.length > chatConfig.maxQuestionLength) {
     return null;
   }
 
-  return { question, history };
+  return { question };
+}
+
+function getChatRateLimiter() {
+  const bindings = env as typeof env & {
+    AIMS_CHAT_RATE_LIMITER?: RateLimit;
+  };
+
+  return bindings.AIMS_CHAT_RATE_LIMITER;
+}
+
+async function checkRateLimit(request: Request) {
+  const rateLimiter = getChatRateLimiter();
+
+  if (!rateLimiter) {
+    throw new LabChatServiceError(
+      'The lab assistant is not configured yet.',
+      503,
+    );
+  }
+
+  const clientIdentifier =
+    request.headers.get('cf-connecting-ip')?.trim() || 'local-development';
+
+  try {
+    return await rateLimiter.limit({ key: `chat:${clientIdentifier}` });
+  } catch {
+    throw new LabChatServiceError(
+      'The lab assistant is temporarily unavailable. Please try again later.',
+      503,
+    );
+  }
 }
 
 export async function POST(request: Request) {
@@ -147,10 +133,17 @@ export async function POST(request: Request) {
   }
 
   try {
-    const answer = await answerLabQuestion(
-      chatRequest.question,
-      chatRequest.history ?? [],
-    );
+    const rateLimit = await checkRateLimit(request);
+
+    if (!rateLimit.success) {
+      return jsonResponse(
+        { error: 'Too many questions were sent. Please wait a minute.' },
+        429,
+        { 'Retry-After': '60' },
+      );
+    }
+
+    const answer = await answerLabQuestion(chatRequest.question);
 
     return jsonResponse(answer);
   } catch (error) {

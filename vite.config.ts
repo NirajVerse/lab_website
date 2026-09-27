@@ -39,6 +39,14 @@ const localBindingConfig = {
       remote: true,
     },
   ],
+  ratelimits: [
+    {
+      name: 'AIMS_CHAT_RATE_LIMITER',
+      // Account-unique namespace for this pilot's counters.
+      namespace_id: '20260927',
+      simple: { limit: 12, period: 60 as const },
+    },
+  ],
 };
 
 export default defineConfig(async () => {

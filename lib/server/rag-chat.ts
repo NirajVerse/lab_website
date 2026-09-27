@@ -1,11 +1,7 @@
 import { env } from 'cloudflare:workers';
 
 import { chatConfig } from '@/data/chat';
-import type {
-  LabChatMessage,
-  LabChatResponse,
-  LabChatSource,
-} from '@/types/chat';
+import type { LabChatResponse, LabChatSource } from '@/types/chat';
 
 const REQUEST_TIMEOUT_MS = 20_000;
 
@@ -125,7 +121,6 @@ function isProviderTimeout(error: unknown) {
 
 export async function answerLabQuestion(
   question: string,
-  history: LabChatMessage[],
 ): Promise<LabChatResponse> {
   const search = getSearchBinding();
 
@@ -141,7 +136,6 @@ export async function answerLabQuestion(
       search.chatCompletions({
         messages: [
           { role: 'system', content: systemPrompt },
-          ...history,
           { role: 'user', content: question },
         ],
         ai_search_options: {

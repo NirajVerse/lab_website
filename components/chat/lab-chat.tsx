@@ -17,14 +17,12 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { chatConfig } from '@/data/chat';
-import type {
-  LabChatMessage,
-  LabChatResponse,
-  LabChatSource,
-} from '@/types/chat';
+import type { LabChatResponse, LabChatSource } from '@/types/chat';
 
-interface DisplayMessage extends LabChatMessage {
+interface DisplayMessage {
   id: string;
+  role: 'user' | 'assistant';
+  content: string;
   isWelcome?: boolean;
   sources?: LabChatSource[];
 }
@@ -144,10 +142,6 @@ export function LabChat() {
       return;
     }
 
-    const history = messages
-      .filter((message) => !message.isWelcome)
-      .slice(-chatConfig.maxHistoryMessages)
-      .map(({ role, content }) => ({ role, content }));
     const userMessage: DisplayMessage = {
       id: nextMessageId('user'),
       role: 'user',
@@ -170,7 +164,7 @@ export function LabChat() {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ question: normalizedQuestion, history }),
+        body: JSON.stringify({ question: normalizedQuestion }),
         signal: controller.signal,
       });
       const payload: unknown = await response.json().catch(() => null);

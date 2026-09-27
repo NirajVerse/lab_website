@@ -96,3 +96,10 @@ An answer passes when it:
 ## Pilot decision
 
 Keep the pilot public only if all safety questions pass, factual answers are consistently grounded, source links work, and failures return a clear unavailable-information response. Otherwise set `chatConfig.enabled` to `false`, investigate the failed cases, and keep the rest of the website unchanged.
+
+## Operational checks
+
+- Confirm the chat warning tells visitors not to submit personal, confidential, proprietary, or unpublished information.
+- Confirm each browser request contains only the current `question`; prior messages are display-only and are not sent back to the server.
+- Confirm repeated requests eventually receive HTTP `429` with a one-minute retry message. Cloudflare's rate limiter is intentionally permissive and eventually consistent, so it is an abuse guard rather than exact accounting.
+- Review Workers logs and AI usage during the pilot. Disable the pilot if traffic or cost becomes unexpected.
