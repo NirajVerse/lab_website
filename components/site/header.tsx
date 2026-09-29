@@ -42,7 +42,17 @@ function BrandLockup({
         aria-hidden="true"
       >
         <span className="font-medium">AI</span>
-        <span className={cn('font-bold', inverse ? 'text-accent' : 'text-primary')}>
+        <span
+          className="font-bold text-primary"
+          style={
+            inverse
+              ? {
+                  WebkitTextStroke: '1.15px var(--accent)',
+                  WebkitTextFillColor: 'var(--primary)',
+                }
+              : undefined
+          }
+        >
           M
         </span>
         <span className="font-medium">S</span>
