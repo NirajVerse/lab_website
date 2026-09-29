@@ -24,42 +24,54 @@ function isCurrentPath(pathname: string, href: string) {
     : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function BrandLockup({ compact = false }: { compact?: boolean }) {
+function BrandLockup({
+  compact = false,
+  inverse = false,
+}: {
+  compact?: boolean;
+  inverse?: boolean;
+}) {
   return (
     <span className="flex min-w-0 items-center">
       <span
         className={cn(
-          'flex shrink-0 items-baseline font-heading leading-none tracking-[-0.045em] text-foreground',
+          'flex shrink-0 items-baseline font-heading leading-none tracking-[-0.045em]',
           compact ? 'text-[1.7rem]' : 'text-[1.85rem] sm:text-[2.45rem]',
+          inverse ? 'text-primary-foreground' : 'text-foreground',
         )}
         aria-hidden="true"
       >
         <span className="font-medium">AI</span>
-        <span className="font-bold text-primary">M</span>
+        <span className={cn('font-bold', inverse ? 'text-accent' : 'text-primary')}>
+          M
+        </span>
         <span className="font-medium">S</span>
       </span>
       <span
         className={cn(
           'mx-2.5 h-9 w-px shrink-0 bg-border sm:mx-3.5 sm:h-11',
           compact && 'mx-2.5 h-9',
+          inverse && 'bg-primary-foreground/30',
         )}
         aria-hidden="true"
       />
       <span className="min-w-0 leading-tight">
         <span
           className={cn(
-            'block font-heading font-semibold text-primary',
+            'block font-heading font-semibold',
             compact ? 'text-sm' : 'text-[0.72rem] sm:text-[0.92rem]',
+            inverse ? 'text-primary-foreground' : 'text-primary',
           )}
         >
           {siteConfig.university}
         </span>
         <span
           className={cn(
-            'mt-0.5 block font-medium text-foreground/80',
+            'mt-0.5 block font-medium',
             compact
               ? 'text-[0.68rem]'
               : 'max-w-[11.5rem] text-[0.58rem] sm:max-w-none sm:text-[0.72rem]',
+            inverse ? 'text-primary-foreground' : 'text-foreground/80',
           )}
         >
           {siteConfig.labExpansion}
@@ -73,14 +85,14 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-t-4 border-primary border-b border-border bg-background text-foreground">
+    <header className="sticky top-0 z-40 border-b border-white/15 bg-primary text-primary-foreground">
       <Container className="flex min-h-[5.1rem] items-center justify-between gap-4 py-2.5">
         <Link
           href="/"
-          className="group min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+          className="group min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-4 focus-visible:ring-offset-primary"
           aria-label={`${siteConfig.labName} home`}
         >
-          <BrandLockup />
+          <BrandLockup inverse />
         </Link>
 
         <nav aria-label="Primary navigation" className="hidden 2xl:block">
@@ -93,9 +105,9 @@ export function Header() {
                     href={item.href}
                     aria-current={isCurrent ? 'page' : undefined}
                     className={cn(
-                      'relative inline-flex h-10 items-center px-3 text-[0.78rem] font-semibold text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                      'relative inline-flex h-10 items-center px-3 text-[0.78rem] font-semibold text-primary-foreground/75 transition-colors hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary',
                       isCurrent &&
-                        'text-primary after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-primary',
+                        'text-primary-foreground after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-accent',
                     )}
                   >
                     {item.label}
@@ -112,7 +124,7 @@ export function Header() {
               <Button
                 variant="outline"
                 size="icon-lg"
-                className="size-11 rounded-sm border-primary/35 bg-transparent text-primary hover:border-primary/60 hover:bg-primary/5 hover:text-primary focus-visible:border-primary focus-visible:ring-ring focus-visible:ring-offset-background 2xl:hidden"
+                className="size-11 rounded-sm border-white/35 bg-transparent text-primary-foreground hover:border-white/60 hover:bg-white/10 hover:text-primary-foreground focus-visible:border-primary-foreground focus-visible:ring-primary-foreground focus-visible:ring-offset-primary 2xl:hidden"
                 aria-label="Open navigation menu"
               />
             }
