@@ -24,26 +24,63 @@ function isCurrentPath(pathname: string, href: string) {
     : pathname === href || pathname.startsWith(`${href}/`);
 }
 
+function BrandLockup({ compact = false }: { compact?: boolean }) {
+  return (
+    <span className="flex min-w-0 items-center">
+      <span
+        className={cn(
+          'flex shrink-0 items-baseline font-heading leading-none tracking-[-0.045em] text-foreground',
+          compact ? 'text-[1.7rem]' : 'text-[1.85rem] sm:text-[2.45rem]',
+        )}
+        aria-hidden="true"
+      >
+        <span className="font-medium">AI</span>
+        <span className="font-bold text-primary">M</span>
+        <span className="font-medium">S</span>
+      </span>
+      <span
+        className={cn(
+          'mx-2.5 h-9 w-px shrink-0 bg-border sm:mx-3.5 sm:h-11',
+          compact && 'mx-2.5 h-9',
+        )}
+        aria-hidden="true"
+      />
+      <span className="min-w-0 leading-tight">
+        <span
+          className={cn(
+            'block font-heading font-semibold text-primary',
+            compact ? 'text-sm' : 'text-[0.72rem] sm:text-[0.92rem]',
+          )}
+        >
+          {siteConfig.university}
+        </span>
+        <span
+          className={cn(
+            'mt-0.5 block font-medium text-foreground/80',
+            compact
+              ? 'text-[0.68rem]'
+              : 'max-w-[11.5rem] text-[0.58rem] sm:max-w-none sm:text-[0.72rem]',
+          )}
+        >
+          {siteConfig.labExpansion}
+        </span>
+      </span>
+    </span>
+  );
+}
+
 export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/15 bg-primary text-primary-foreground">
-      <Container className="flex min-h-[4.75rem] items-center justify-between gap-4 py-2.5">
+    <header className="sticky top-0 z-40 border-t-4 border-primary border-b border-border bg-background text-foreground">
+      <Container className="flex min-h-[5.1rem] items-center justify-between gap-4 py-2.5">
         <Link
           href="/"
-          className="group flex min-w-0 items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+          className="group min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
           aria-label={`${siteConfig.labName} home`}
         >
-          <span className="h-11 w-1 shrink-0 bg-accent" aria-hidden="true" />
-          <span className="min-w-0">
-            <span className="block font-heading text-lg leading-none font-semibold tracking-[-0.02em] text-primary-foreground sm:text-xl">
-              {siteConfig.shortName}
-            </span>
-            <span className="mt-1 block text-[0.7rem] leading-4 italic text-primary-foreground/85 sm:text-xs">
-              {siteConfig.labExpansion}
-            </span>
-          </span>
+          <BrandLockup />
         </Link>
 
         <nav aria-label="Primary navigation" className="hidden 2xl:block">
@@ -56,9 +93,9 @@ export function Header() {
                     href={item.href}
                     aria-current={isCurrent ? 'page' : undefined}
                     className={cn(
-                      'relative inline-flex h-10 items-center px-3 text-[0.78rem] font-semibold text-primary-foreground/75 transition-colors hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary',
+                      'relative inline-flex h-10 items-center px-3 text-[0.78rem] font-semibold text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
                       isCurrent &&
-                        'text-primary-foreground after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-accent',
+                        'text-primary after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-primary',
                     )}
                   >
                     {item.label}
@@ -75,7 +112,7 @@ export function Header() {
               <Button
                 variant="outline"
                 size="icon-lg"
-                className="size-11 rounded-sm border-white/35 bg-transparent text-primary-foreground hover:border-white/60 hover:bg-white/10 hover:text-primary-foreground focus-visible:border-primary-foreground focus-visible:ring-primary-foreground focus-visible:ring-offset-primary 2xl:hidden"
+                className="size-11 rounded-sm border-primary/35 bg-transparent text-primary hover:border-primary/60 hover:bg-primary/5 hover:text-primary focus-visible:border-primary focus-visible:ring-ring focus-visible:ring-offset-background 2xl:hidden"
                 aria-label="Open navigation menu"
               />
             }
@@ -84,13 +121,11 @@ export function Header() {
           </SheetTrigger>
           <SheetContent className="w-[min(90vw,25rem)] overflow-y-auto bg-background p-0">
             <SheetHeader className="border-b border-border px-6 py-6 pr-14 text-left">
-              <SheetTitle className="font-heading text-xl font-semibold">
-                {siteConfig.shortName}
+              <SheetTitle className="sr-only">
+                {siteConfig.labName} navigation
               </SheetTitle>
               <SheetDescription>
-                <span className="block italic text-foreground">
-                  {siteConfig.labExpansion}
-                </span>
+                <BrandLockup compact />
               </SheetDescription>
             </SheetHeader>
             <nav aria-label="Mobile navigation" className="px-3 py-4">
