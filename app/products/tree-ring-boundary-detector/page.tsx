@@ -66,19 +66,6 @@ export default function TreeRingBoundaryDetectorPage() {
                     Center the sample, keep the growth rings visible, and use
                     even lighting with as little background clutter as possible.
                   </p>
-                  <p className="mt-3 text-xs leading-5 text-muted-foreground">
-                    Example: Douglas fir cross-section, cropped and resized from
-                    the{' '}
-                    <a
-                      href="https://doi.org/10.15454/YUNEGL"
-                      className="font-semibold text-primary underline underline-offset-4"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      TreeTrace_Douglas dataset
-                    </a>{' '}
-                    by Longuetaud et al. (2022).
-                  </p>
                 </figcaption>
               </figure>
 
@@ -178,21 +165,6 @@ export default function TreeRingBoundaryDetectorPage() {
                     and under 4 MB before upload.
                   </p>
                 </div>
-              </section>
-
-              <section className="border-t border-border pt-6 text-sm leading-6 text-muted-foreground">
-                <p>
-                  Model adapted from an MIT-licensed{' '}
-                  <a
-                    href="https://doi.org/10.1007/978-3-032-10185-3_3"
-                    className="font-semibold text-primary underline underline-offset-4"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    published research implementation
-                  </a>
-                  .
-                </p>
               </section>
             </aside>
           </div>
