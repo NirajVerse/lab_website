@@ -1,7 +1,7 @@
 ---
 title: AIMS Lab Public Knowledge Base
 visibility: public
-last_reviewed: 2026-09-27
+last_reviewed: 2026-10-03
 maintainer: AIMS Lab
 ---
 
@@ -45,6 +45,7 @@ Topics: Industry collaboration; Workflow automation; Automated inspection.
 Methods: Machine learning; Model development and validation; Applied data analysis.
 
 Research questions:
+
 - Which labor-intensive tasks are suitable for reliable AI-assisted analysis?
 - How can models be evaluated for the data and operating conditions of an industrial workflow?
 
@@ -62,6 +63,7 @@ Topics: Drone-image classification; Computer vision; Visual data analysis.
 Methods: Deep learning; Image preprocessing and classification; Performance evaluation.
 
 Research questions:
+
 - How can drone and other image datasets be classified accurately and consistently?
 - How do image conditions and dataset composition affect model performance?
 
@@ -79,6 +81,7 @@ Topics: Bio-based composites; Engineered wood products; Materials assessment.
 Methods: Materials characterization; Machine learning; Image-based assessment.
 
 Research questions:
+
 - How can data-driven methods improve the assessment of wood and bio-based materials?
 - Which material features are most useful for classification or property prediction?
 
@@ -96,6 +99,7 @@ Topics: Moisture transport; Thermal transport; Renewable and alternative energy.
 Methods: Computational modeling; Heat and mass transfer analysis; Data analysis.
 
 Research questions:
+
 - How do coupled moisture and thermal processes influence material behavior?
 - How can computational models support the analysis of renewable and alternative energy systems?
 
@@ -103,7 +107,7 @@ Website source: [Research](/research)
 
 ## People and roles
 
-The published roster currently lists 6 current lab members including the principal investigator: 1 principal investigator, 1 PhD student, 2 master's students, and 2 undergraduate students. It also lists 1 alumnus. These counts describe the people currently shown on the website and should be reviewed whenever the roster changes.
+The published roster currently lists 7 current lab members including the principal investigator: 1 principal investigator, 1 PhD student, 2 master's students, and 3 undergraduate students. It also lists 1 alumnus. These counts describe the people currently shown on the website and should be reviewed whenever the roster changes.
 
 ### Dr. Jason Tyler Street
 
@@ -114,12 +118,14 @@ The published roster currently lists 6 current lab members including the princip
 Dr. Street leads AIMS Lab and serves as Interim Head and Associate Professor in Mississippi State University’s Department of Sustainable Bioproducts. His work spans sustainable materials, engineered wood products, artificial intelligence, transport modeling, and renewable energy systems.
 
 Research interests:
+
 - Bio-based composites and engineered wood products
 - AI and machine learning in materials research
 - Moisture and thermal transport modeling
 - Renewable and alternative energy systems
 
 Education:
+
 - Ph.D. in Engineering, Mississippi State University
 - M.S. in Biological Engineering, Mississippi State University
 - B.S. in Biological Engineering, Mississippi State University
@@ -138,6 +144,7 @@ Website source: [People](/people)
 Tilak Neupane is a final-year PhD student in the Department of Sustainable Bioproducts. His research applies machine learning and deep learning to assess wood properties, including wood chip moisture content and the mechanical properties of tree logs. He earned an MS in Forestry from the University of Georgia.
 
 Research interests:
+
 - Artificial intelligence and computer vision for wood quality assessment
 - Moisture content prediction
 - Hyperspectral imaging
@@ -155,12 +162,14 @@ Website source: [People](/people)
 Benjamin Wiley is a graduate research assistant and dual M.S. in Sustainable Bioproducts and MBA candidate at Mississippi State University. His work examines biomass residuals for alternative-energy systems and develops machine-learning and computer-vision models to estimate biomass strength, appearance, and composition.
 
 Research interests:
+
 - Machine learning and computer vision for biomass
 - Biomass residual utilization
 - Alternative energy systems
 - Life-cycle assessment
 
 Education:
+
 - M.S. in Sustainable Bioproducts, Mississippi State University (expected 2028)
 - Master of Business Administration, Mississippi State University (expected 2027)
 - B.S. in Sustainable Bioproducts, Mississippi State University (2026)
@@ -177,11 +186,13 @@ Website source: [People](/people)
 Madeline Gnann is a graduate research assistant pursuing an M.S. in Sustainable Bioproducts after earning her B.S. in Sustainable Bioproducts at Mississippi State University. Her laboratory experience includes chemical analysis and wood identification.
 
 Research interests:
+
 - Sustainable bioproducts
 - Wood identification
 - Chemical laboratory methods
 
 Education:
+
 - M.S. in Sustainable Bioproducts, Mississippi State University (expected 2027)
 - B.S. in Sustainable Bioproducts, Mississippi State University (2025)
 
@@ -197,12 +208,38 @@ Website source: [People](/people)
 Bibek Bhatta is an undergraduate Mechanical Engineering student at Mississippi State University. His experience includes organizing a NASA Space Apps Challenge event and teaching introductory machine-learning concepts to participants.
 
 Research interests:
+
 - Machine learning
 - Mechanical engineering
 - Technical education and outreach
 
 Education:
+
 - B.S. in Mechanical Engineering, Mississippi State University (in progress)
+
+Website source: [People](/people)
+
+### Niraj Gupta
+
+- Status: Current member
+- Role: Undergraduate student
+- Public title: Undergraduate Researcher · Computer Science
+- Program: B.S. in Computer Science
+
+Niraj Gupta is an undergraduate Computer Science student at Mississippi State University whose work focuses on artificial intelligence. His research experience includes deep-learning image classification, computer vision for wood-material analysis, and growth-ring prediction.
+
+Research interests:
+
+- Artificial intelligence and machine learning
+- Computer vision and image classification
+- Deep learning for forest products
+- Large language models
+
+Education:
+
+- B.S. in Computer Science, Mississippi State University (expected 2028)
+
+LinkedIn: https://www.linkedin.com/in/ng9812
 
 Website source: [People](/people)
 
@@ -216,6 +253,7 @@ Website source: [People](/people)
 Quinton Wiley is an undergraduate researcher whose interests connect sustainability and conservation with sustainable-product development. He has participated in the Sustainable Bioproducts REU and previously served as a research assistant in Mississippi State University’s College of Forest Resources.
 
 Research interests:
+
 - Sustainability and conservation
 - Environmental research
 - Sustainable-product development
@@ -232,12 +270,14 @@ Website source: [People](/people)
 Ethan Turo is an AIMS Lab alumnus with M.S. and B.S. degrees in Sustainable Bioproducts from Mississippi State University. His research involved testing the mechanical and physical properties of wood and engineered wood products and analyzing the resulting data. He is now a laboratory technician at Huber Engineered Woods.
 
 Research interests:
+
 - Engineered wood products
 - Wood materials testing
 - Statistical data analysis
 - Computer vision
 
 Education:
+
 - M.S. in Sustainable Bioproducts, Mississippi State University (2025)
 - B.S. in Sustainable Bioproducts, Mississippi State University (2023)
 

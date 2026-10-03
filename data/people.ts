@@ -107,6 +107,26 @@ export const people: Person[] = [
     linkedin: 'https://www.linkedin.com/in/beebekisme',
   },
   {
+    id: 'niraj-gupta',
+    name: 'Niraj Gupta',
+    role: 'undergraduate',
+    title: 'Undergraduate Researcher · Computer Science',
+    program: 'B.S. in Computer Science',
+    image: '/people/placeholder-person.svg',
+    imageAlt: 'Profile photo placeholder for Niraj Gupta',
+    bio: 'Niraj Gupta is an undergraduate Computer Science student at Mississippi State University whose work focuses on artificial intelligence. His research experience includes deep-learning image classification, computer vision for wood-material analysis, and growth-ring prediction.',
+    researchInterests: [
+      'Artificial intelligence and machine learning',
+      'Computer vision and image classification',
+      'Deep learning for forest products',
+      'Large language models',
+    ],
+    education: [
+      'B.S. in Computer Science, Mississippi State University (expected 2028)',
+    ],
+    linkedin: 'https://www.linkedin.com/in/ng9812',
+  },
+  {
     id: 'quinton-wiley',
     name: 'Quinton Wiley',
     role: 'undergraduate',
