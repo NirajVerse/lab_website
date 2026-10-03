@@ -17,7 +17,7 @@ const productTitle = 'Generic Tree Ring Boundary Detector';
 
 export const metadata = createPageMetadata(
   productTitle,
-  'Try the generic DeepCS-TRD research model and visualize predicted tree-ring boundaries in a wood cross-section image.',
+  'Try the generic tree-ring boundary research model and visualize predicted boundaries in a wood cross-section image.',
 );
 
 export default function TreeRingBoundaryDetectorPage() {
@@ -26,7 +26,7 @@ export default function TreeRingBoundaryDetectorPage() {
       <PageHero
         eyebrow="Products · Image segmentation"
         title={productTitle}
-        description="Upload a wood cross-section image to visualize the boundary pixels predicted by the generic DeepCS-TRD model across varied species and capture conditions."
+        description="Upload a wood cross-section image to visualize boundary pixels predicted by the generic model across varied species and capture conditions."
       />
 
       <section className="py-16 sm:py-20 lg:py-24">
@@ -51,10 +51,9 @@ export default function TreeRingBoundaryDetectorPage() {
                   </h2>
                 </div>
                 <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                  This public trial exposes the neural boundary-segmentation
-                  stage of DeepCS-TRD. It highlights likely ring boundaries but
-                  does not count annual rings or run the full pith-dependent
-                  geometric analysis.
+                  This public trial exposes a neural boundary-segmentation
+                  model. It highlights likely ring boundaries but does not count
+                  annual rings or run pith-dependent geometric analysis.
                 </p>
               </section>
 
@@ -69,7 +68,7 @@ export default function TreeRingBoundaryDetectorPage() {
                   <div className="flex justify-between gap-4 py-3">
                     <dt className="text-muted-foreground">Model</dt>
                     <dd className="text-right font-semibold">
-                      DeepCS-TRD generic
+                      Generic tree-ring model
                     </dd>
                   </div>
                   <div className="flex justify-between gap-4 py-3">
@@ -143,14 +142,14 @@ export default function TreeRingBoundaryDetectorPage() {
 
               <section className="border-t border-border pt-6 text-sm leading-6 text-muted-foreground">
                 <p>
-                  Model adapted from the MIT-licensed{' '}
+                  Model adapted from an MIT-licensed{' '}
                   <a
-                    href="https://github.com/hmarichal93/deepcstrd"
+                    href="https://doi.org/10.1007/978-3-032-10185-3_3"
                     className="font-semibold text-primary underline underline-offset-4"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    DeepCS-TRD project
+                    published research implementation
                   </a>
                   .
                 </p>

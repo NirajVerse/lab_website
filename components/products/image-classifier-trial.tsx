@@ -63,7 +63,7 @@ interface MoisturePredictionResult {
 }
 
 interface TreeRingPredictionResult {
-  model_id: 'deep-cstrd-generic';
+  model_id: 'tree-ring-boundary-generic';
   threshold: number;
   input_width: number;
   input_height: number;
@@ -164,7 +164,7 @@ function parseTreeRingPredictionResult(
   const record = value as Record<string, unknown>;
 
   if (
-    record.model_id !== 'deep-cstrd-generic' ||
+    record.model_id !== 'tree-ring-boundary-generic' ||
     !isProbability(record.threshold) ||
     !isFiniteNumber(record.input_width) ||
     !Number.isInteger(record.input_width) ||
@@ -180,7 +180,7 @@ function parseTreeRingPredictionResult(
   }
 
   return {
-    model_id: 'deep-cstrd-generic',
+    model_id: 'tree-ring-boundary-generic',
     threshold: record.threshold,
     input_width: record.input_width,
     input_height: record.input_height,
@@ -710,7 +710,7 @@ function TreeRingPredictionPanel({
       <p className="mt-6 border-t border-border pt-5 text-sm leading-6 text-muted-foreground">
         This visualization is a neural segmentation result. It does not count
         annual rings or replace the pith-dependent geometric analysis used in
-        the full DeepCS-TRD research workflow.
+        the full pith-dependent research workflow.
       </p>
     </section>
   );

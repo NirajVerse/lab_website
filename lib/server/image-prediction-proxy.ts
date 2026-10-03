@@ -40,7 +40,7 @@ interface MoisturePredictionPayload {
 }
 
 interface TreeRingPredictionPayload {
-  model_id: 'deep-cstrd-generic';
+  model_id: 'tree-ring-boundary-generic';
   threshold: number;
   input_width: number;
   input_height: number;
@@ -143,7 +143,7 @@ function parseTreeRingPredictionPayload(
     /^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/.test(maskDataUrl);
 
   if (
-    record.model_id !== 'deep-cstrd-generic' ||
+    record.model_id !== 'tree-ring-boundary-generic' ||
     !isProbability(record.threshold) ||
     !isFiniteNumber(record.input_width) ||
     !Number.isInteger(record.input_width) ||
@@ -158,7 +158,7 @@ function parseTreeRingPredictionPayload(
   }
 
   return {
-    model_id: 'deep-cstrd-generic',
+    model_id: 'tree-ring-boundary-generic',
     threshold: record.threshold,
     input_width: record.input_width,
     input_height: record.input_height,

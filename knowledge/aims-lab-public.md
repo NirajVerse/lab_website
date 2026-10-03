@@ -288,12 +288,12 @@ Website source: [Products](/products)
 - Availability: available
 - Category: Image segmentation
 - Summary: Highlight likely tree-ring boundaries in a wood cross-section image.
-- Description: This research prototype runs the generic DeepCS-TRD segmentation model and returns a maroon visual overlay of predicted tree-ring boundary pixels. It accepts varied species and image conditions, but its output remains experimental.
+- Description: This research prototype runs a generic segmentation model and returns a maroon visual overlay of predicted tree-ring boundary pixels. It accepts varied species and image conditions, but its output remains experimental.
 - Capabilities: Generic cross-species model; Boundary overlay; Image upload
 - Model input: 1504 × 1504 pixels
 - Prediction threshold: 0.50
 - Tiling: disabled
-- Important limitation: The public trial exposes the neural boundary map only. It does not count annual rings or run the full pith-dependent geometric analysis.
+- Important limitation: The public trial exposes the neural boundary map only. It does not count annual rings or run pith-dependent geometric analysis.
 - Try the product: /products/tree-ring-boundary-detector
 
 Website source: [Generic Tree Ring Boundary Detector](/products/tree-ring-boundary-detector)
@@ -304,7 +304,7 @@ The guitar veneer grading prototype predicts one of three grades: 2A, 3A, or 4A.
 
 The Wood Chip Moisture Content Estimator returns an estimated moisture percentage from an image. It is not a laboratory measurement and must not be described as a replacement for laboratory testing.
 
-The Generic Tree Ring Boundary Detector highlights likely ring-boundary pixels. It does not provide an annual-ring count or the full DeepCS-TRD geometric output.
+The Generic Tree Ring Boundary Detector highlights likely ring-boundary pixels. It does not provide an annual-ring count or a pith-dependent geometric output.
 
 ## Publications
 

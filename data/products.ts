@@ -56,7 +56,7 @@ export const products: Product[] = [
     tagline:
       'Highlight likely tree-ring boundaries in a wood cross-section image.',
     description:
-      'This research prototype runs the generic DeepCS-TRD segmentation model and returns a visual overlay of predicted tree-ring boundary pixels. It is designed for varied species and image conditions, but its output remains experimental.',
+      'This research prototype runs a generic segmentation model and returns a visual overlay of predicted tree-ring boundary pixels. It is designed for varied species and image conditions, but its output remains experimental.',
     category: 'Image segmentation',
     status: 'available',
     capabilities: [
