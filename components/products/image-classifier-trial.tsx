@@ -12,8 +12,14 @@ import {
 } from 'react';
 
 import { Button } from '@/components/ui/button';
+import {
+  prepareImageUpload,
+  type PreparedImageUpload,
+} from '@/lib/client/prepare-image-upload';
 
-const MAX_FILE_BYTES = 4 * 1024 * 1024;
+const MAX_SELECTED_FILE_BYTES = 50 * 1024 * 1024;
+const TARGET_UPLOAD_BYTES = Math.floor(3.75 * 1024 * 1024);
+const MAX_IMAGE_DIMENSION = 1504;
 const allowedImageTypes = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
 export interface ClassDefinition {
@@ -276,16 +282,22 @@ function ImageTrial<Result>({
   renderResult,
 }: ImageTrialProps<Result>) {
   const [file, setFile] = useState<File | null>(null);
+  const [fileDetails, setFileDetails] = useState<PreparedImageUpload | null>(
+    null,
+  );
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isPreparing, setIsPreparing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewUrlRef = useRef<string | null>(null);
+  const preparationRequestRef = useRef(0);
   const guidanceId = `${inputId}-guidance`;
 
   useEffect(() => {
     return () => {
+      preparationRequestRef.current += 1;
       if (previewUrlRef.current) {
         URL.revokeObjectURL(previewUrlRef.current);
       }
@@ -302,19 +314,24 @@ function ImageTrial<Result>({
     setPreviewUrl(nextUrl);
   }
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+  async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0] ?? null;
+    const requestId = preparationRequestRef.current + 1;
+    preparationRequestRef.current = requestId;
 
     setResult(null);
     setError(null);
+    setFileDetails(null);
 
     if (!selectedFile) {
+      setIsPreparing(false);
       setFile(null);
       replacePreview(null);
       return;
     }
 
     if (!allowedImageTypes.has(selectedFile.type.toLowerCase())) {
+      setIsPreparing(false);
       setFile(null);
       replacePreview(null);
       setError('Choose a JPEG, PNG, or WebP image.');
@@ -322,15 +339,17 @@ function ImageTrial<Result>({
       return;
     }
 
-    if (selectedFile.size > MAX_FILE_BYTES) {
+    if (selectedFile.size > MAX_SELECTED_FILE_BYTES) {
+      setIsPreparing(false);
       setFile(null);
       replacePreview(null);
-      setError('Choose an image smaller than 4 MB.');
+      setError('Choose an image no larger than 50 MB.');
       event.target.value = '';
       return;
     }
 
     if (selectedFile.size === 0) {
+      setIsPreparing(false);
       setFile(null);
       replacePreview(null);
       setError('The selected image is empty. Choose another file.');
@@ -338,12 +357,52 @@ function ImageTrial<Result>({
       return;
     }
 
-    setFile(selectedFile);
-    replacePreview(selectedFile);
+    setFile(null);
+    replacePreview(null);
+    setIsPreparing(true);
+
+    try {
+      const preparedImage = await prepareImageUpload(selectedFile, {
+        maxDimension: MAX_IMAGE_DIMENSION,
+        targetBytes: TARGET_UPLOAD_BYTES,
+        maxSourceBytes: MAX_SELECTED_FILE_BYTES,
+      });
+
+      if (preparationRequestRef.current !== requestId) {
+        return;
+      }
+
+      setFile(preparedImage.file);
+      setFileDetails(preparedImage);
+      replacePreview(preparedImage.file);
+    } catch (caughtError) {
+      if (preparationRequestRef.current !== requestId) {
+        return;
+      }
+
+      setFile(null);
+      setFileDetails(null);
+      replacePreview(null);
+      setError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : 'The selected image could not be prepared for upload.',
+      );
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } finally {
+      if (preparationRequestRef.current === requestId) {
+        setIsPreparing(false);
+      }
+    }
   }
 
   function resetTrial() {
+    preparationRequestRef.current += 1;
+    setIsPreparing(false);
     setFile(null);
+    setFileDetails(null);
     replacePreview(null);
     setResult(null);
     setError(null);
@@ -357,7 +416,7 @@ function ImageTrial<Result>({
   ) {
     event.preventDefault();
 
-    if (!file || isSubmitting) {
+    if (!file || isPreparing || isSubmitting) {
       return;
     }
 
@@ -413,7 +472,11 @@ function ImageTrial<Result>({
         </p>
       </div>
 
-      <form className="mt-7" onSubmit={handleSubmit} aria-busy={isSubmitting}>
+      <form
+        className="mt-7"
+        onSubmit={handleSubmit}
+        aria-busy={isPreparing || isSubmitting}
+      >
         <label
           htmlFor={inputId}
           className="block text-sm font-bold text-foreground"
@@ -433,7 +496,7 @@ function ImageTrial<Result>({
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
                 onChange={handleFileChange}
-                disabled={isSubmitting}
+                disabled={isPreparing || isSubmitting}
                 aria-describedby={guidanceId}
                 className="block min-h-11 w-full cursor-pointer text-sm text-muted-foreground file:mr-4 file:min-h-11 file:cursor-pointer file:border-0 file:bg-primary file:px-4 file:text-sm file:font-semibold file:text-primary-foreground hover:file:bg-primary/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-60 disabled:file:cursor-not-allowed"
               />
@@ -441,18 +504,19 @@ function ImageTrial<Result>({
                 id={guidanceId}
                 className="mt-2 text-xs leading-5 text-muted-foreground"
               >
-                JPEG, PNG, or WebP · Maximum file size 4 MB
+                JPEG, PNG, or WebP · Images up to 50 MB are automatically
+                optimized before upload
               </p>
             </div>
           </div>
         </div>
 
-        {previewUrl && file ? (
+        {previewUrl && file && fileDetails ? (
           <div className="mt-6 grid gap-5 border border-border p-4 sm:grid-cols-[12rem_1fr] sm:items-center">
             <div className="relative aspect-square overflow-hidden bg-muted">
               <Image
                 src={previewUrl}
-                alt={`Preview of ${file.name}`}
+                alt={`Preview of ${fileDetails.originalName}`}
                 fill
                 unoptimized
                 sizes="192px"
@@ -465,12 +529,20 @@ function ImageTrial<Result>({
               </p>
               <p
                 className="mt-2 truncate text-sm font-semibold"
-                title={file.name}
+                title={fileDetails.originalName}
               >
-                {file.name}
+                {fileDetails.originalName}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
-                {(file.size / (1024 * 1024)).toFixed(2)} MB
+                Prepared copy: {(file.size / (1024 * 1024)).toFixed(2)} MB
+                {' · '}Original:{' '}
+                {(fileDetails.originalBytes / (1024 * 1024)).toFixed(2)} MB
+                {' · '}
+                {fileDetails.outputWidth} × {fileDetails.outputHeight} px
+              </p>
+              <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                Your original file stays on this device. Only this prepared copy
+                is sent when you run the model.
               </p>
             </div>
           </div>
@@ -481,7 +553,7 @@ function ImageTrial<Result>({
             type="submit"
             size="lg"
             className="h-11 rounded-sm px-5 font-semibold"
-            disabled={!file || isSubmitting}
+            disabled={!file || isPreparing || isSubmitting}
           >
             {isSubmitting ? (
               <>
@@ -499,7 +571,7 @@ function ImageTrial<Result>({
               size="lg"
               className="h-11 rounded-sm px-5 font-semibold"
               onClick={resetTrial}
-              disabled={isSubmitting}
+              disabled={isPreparing || isSubmitting}
             >
               <RotateCcw aria-hidden="true" />
               Start over
@@ -509,6 +581,13 @@ function ImageTrial<Result>({
       </form>
 
       <div className="mt-7" aria-live="polite" aria-atomic="true">
+        {isPreparing ? (
+          <p className="flex items-center gap-2 border-l-2 border-primary bg-primary/[0.04] px-4 py-3 text-sm">
+            <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
+            Preparing a smaller upload copy on your device…
+          </p>
+        ) : null}
+
         {isSubmitting ? (
           <p className="border-l-2 border-primary bg-primary/[0.04] px-4 py-3 text-sm">
             The model is analyzing your image. This can take a moment on the

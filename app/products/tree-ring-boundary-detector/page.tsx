@@ -84,8 +84,8 @@ export default function TreeRingBoundaryDetectorPage() {
                     <dd className="font-semibold">Disabled</dd>
                   </div>
                   <div className="flex justify-between gap-4 py-3">
-                    <dt className="text-muted-foreground">Maximum upload</dt>
-                    <dd className="font-semibold">4 MB</dd>
+                    <dt className="text-muted-foreground">Selected image</dt>
+                    <dd className="font-semibold">Up to 50 MB</dd>
                   </div>
                 </dl>
               </section>
@@ -119,8 +119,9 @@ export default function TreeRingBoundaryDetectorPage() {
                   </h2>
                 </div>
                 <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                  Your image is sent to the AIMS Lab prediction service for this
-                  request. The lab application does not save the uploaded image
+                  A resized and compressed copy is sent to the AIMS Lab
+                  prediction service for this request. Your original stays on
+                  your device, and the lab application does not save the copy
                   after the request completes.
                 </p>
               </section>
@@ -133,9 +134,9 @@ export default function TreeRingBoundaryDetectorPage() {
                 <div>
                   <h2 className="text-sm font-bold">Supported files</h2>
                   <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                    Use a clear JPEG, PNG, or WebP image no larger than 4 MB.
-                    The image is resized to the model’s square input dimensions
-                    for analysis.
+                    Use a clear JPEG, PNG, or WebP image up to 50 MB. Your
+                    browser prepares a copy no larger than 1504 pixels per side
+                    and under 4 MB before upload.
                   </p>
                 </div>
               </section>
