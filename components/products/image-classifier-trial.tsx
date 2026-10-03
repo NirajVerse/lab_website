@@ -12,7 +12,10 @@ import {
 } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { downloadImageOverlay } from '@/lib/client/download-image-overlay';
+import {
+  createImageOverlay,
+  downloadImageFile,
+} from '@/lib/client/download-image-overlay';
 import {
   prepareImageUpload,
   type PreparedImageUpload,
@@ -715,31 +718,58 @@ function TreeRingPredictionPanel({
   prediction: TreeRingPredictionResult;
   previewUrl: string | null;
 }) {
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [resultImageUrl, setResultImageUrl] = useState<string | null>(null);
+  const [resultImageError, setResultImageError] = useState<string | null>(null);
 
-  async function handleDownload() {
-    if (!previewUrl || isDownloading) {
+  useEffect(() => {
+    if (!previewUrl) {
       return;
     }
 
-    setIsDownloading(true);
-    setDownloadError(null);
+    let cancelled = false;
+    let objectUrl: string | null = null;
 
-    try {
-      await downloadImageOverlay({
-        baseImageUrl: previewUrl,
-        overlayImageUrl: prediction.mask_data_url,
-        width: prediction.input_width,
-        height: prediction.input_height,
-        fileName: 'aims-tree-ring-boundary-result.png',
+    void createImageOverlay({
+      baseImageUrl: previewUrl,
+      overlayImageUrl: prediction.mask_data_url,
+      width: prediction.input_width,
+      height: prediction.input_height,
+    })
+      .then((resultBlob) => {
+        objectUrl = URL.createObjectURL(resultBlob);
+
+        if (cancelled) {
+          URL.revokeObjectURL(objectUrl);
+          objectUrl = null;
+          return;
+        }
+
+        setResultImageUrl(objectUrl);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setResultImageError(
+            'The aligned result image could not be displayed. Please run the model again.',
+          );
+        }
       });
-    } catch {
-      setDownloadError(
-        'The result image could not be downloaded. Please try again.',
-      );
-    } finally {
-      setIsDownloading(false);
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [
+    prediction.input_height,
+    prediction.input_width,
+    prediction.mask_data_url,
+    previewUrl,
+  ]);
+
+  function handleDownload() {
+    if (resultImageUrl) {
+      downloadImageFile(resultImageUrl, 'aims-tree-ring-boundary-result.png');
     }
   }
 
@@ -789,24 +819,33 @@ function TreeRingPredictionPanel({
 
         <figure>
           <div className="relative aspect-square overflow-hidden border border-primary/30 bg-muted">
-            {previewUrl ? (
+            {resultImageUrl ? (
               <Image
-                src={previewUrl}
-                alt=""
+                src={resultImageUrl}
+                alt="Wood cross-section with predicted tree-ring boundary overlay"
                 fill
                 unoptimized
                 sizes="(min-width: 768px) 35vw, 80vw"
                 className="object-fill"
               />
-            ) : null}
-            <Image
-              src={prediction.mask_data_url}
-              alt=""
-              fill
-              unoptimized
-              sizes="(min-width: 768px) 35vw, 80vw"
-              className="pointer-events-none object-fill"
-            />
+            ) : (
+              <div
+                className="absolute inset-0 grid place-items-center p-5 text-center text-sm text-muted-foreground"
+                role={resultImageError ? 'alert' : 'status'}
+              >
+                {resultImageError ? (
+                  resultImageError
+                ) : (
+                  <span className="inline-flex items-center gap-2">
+                    <LoaderCircle
+                      className="size-4 animate-spin"
+                      aria-hidden="true"
+                    />
+                    Aligning boundary preview…
+                  </span>
+                )}
+              </div>
+            )}
           </div>
           <figcaption className="mt-2 flex items-center gap-2 text-xs font-semibold text-muted-foreground">
             <span className="size-3 shrink-0 bg-primary" aria-hidden="true" />
@@ -817,37 +856,19 @@ function TreeRingPredictionPanel({
 
       <div className="mt-6 flex flex-col items-start gap-2 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm leading-6 text-muted-foreground">
-          Save the model input and predicted boundary overlay as one PNG image.
+          Save this exact aligned preview as one PNG image.
         </p>
         <Button
           type="button"
           size="lg"
           className="h-11 rounded-sm px-5 font-semibold"
           onClick={handleDownload}
-          disabled={!previewUrl || isDownloading}
+          disabled={!resultImageUrl}
         >
-          {isDownloading ? (
-            <>
-              <LoaderCircle className="animate-spin" aria-hidden="true" />
-              Preparing download…
-            </>
-          ) : (
-            <>
-              <Download aria-hidden="true" />
-              Download result image
-            </>
-          )}
+          <Download aria-hidden="true" />
+          Download result image
         </Button>
       </div>
-
-      {downloadError ? (
-        <p
-          role="alert"
-          className="mt-3 border border-destructive/35 bg-destructive/[0.06] px-4 py-3 text-sm text-destructive"
-        >
-          {downloadError}
-        </p>
-      ) : null}
 
       <p className="mt-6 border-t border-border pt-5 text-sm leading-6 text-muted-foreground">
         This visualization is a neural segmentation result. It does not count

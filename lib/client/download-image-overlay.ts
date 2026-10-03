@@ -1,9 +1,8 @@
-interface DownloadImageOverlayOptions {
+interface ImageOverlayOptions {
   baseImageUrl: string;
   overlayImageUrl: string;
   width: number;
   height: number;
-  fileName: string;
 }
 
 function loadImage(url: string) {
@@ -30,13 +29,12 @@ function canvasToPng(canvas: HTMLCanvasElement) {
   });
 }
 
-export async function downloadImageOverlay({
+export async function createImageOverlay({
   baseImageUrl,
   overlayImageUrl,
   width,
   height,
-  fileName,
-}: DownloadImageOverlayOptions) {
+}: ImageOverlayOptions) {
   const [baseImage, overlayImage] = await Promise.all([
     loadImage(baseImageUrl),
     loadImage(overlayImageUrl),
@@ -56,15 +54,15 @@ export async function downloadImageOverlay({
   context.drawImage(baseImage, 0, 0, width, height);
   context.drawImage(overlayImage, 0, 0, width, height);
 
-  const resultBlob = await canvasToPng(canvas);
-  const resultUrl = URL.createObjectURL(resultBlob);
+  return canvasToPng(canvas);
+}
+
+export function downloadImageFile(imageUrl: string, fileName: string) {
   const downloadLink = document.createElement('a');
-  downloadLink.href = resultUrl;
+  downloadLink.href = imageUrl;
   downloadLink.download = fileName;
   downloadLink.hidden = true;
   document.body.appendChild(downloadLink);
   downloadLink.click();
   downloadLink.remove();
-
-  window.setTimeout(() => URL.revokeObjectURL(resultUrl), 1_000);
 }
