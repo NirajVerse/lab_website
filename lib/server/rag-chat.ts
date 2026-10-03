@@ -32,6 +32,10 @@ const sourceCatalog = [
     href: '/products/wood-chip-moisture-estimator',
     label: 'Wood Chip Moisture Content Estimator',
   },
+  {
+    href: '/products/tree-ring-boundary-detector',
+    label: 'Generic Tree Ring Boundary Detector',
+  },
   { href: '/publications', label: 'Publications' },
   { href: '/contact', label: 'Contact' },
 ] as const satisfies readonly LabChatSource[];

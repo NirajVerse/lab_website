@@ -283,11 +283,28 @@ Website source: [Products](/products)
 
 Website source: [Products](/products)
 
+### Generic Tree Ring Boundary Detector
+
+- Availability: available
+- Category: Image segmentation
+- Summary: Highlight likely tree-ring boundaries in a wood cross-section image.
+- Description: This research prototype runs the generic DeepCS-TRD segmentation model and returns a maroon visual overlay of predicted tree-ring boundary pixels. It accepts varied species and image conditions, but its output remains experimental.
+- Capabilities: Generic cross-species model; Boundary overlay; Image upload
+- Model input: 1504 × 1504 pixels
+- Prediction threshold: 0.50
+- Tiling: disabled
+- Important limitation: The public trial exposes the neural boundary map only. It does not count annual rings or run the full pith-dependent geometric analysis.
+- Try the product: /products/tree-ring-boundary-detector
+
+Website source: [Generic Tree Ring Boundary Detector](/products/tree-ring-boundary-detector)
+
 The SYP–RO Image Classifier predicts either RO or SYP from one supported image.
 
 The guitar veneer grading prototype predicts one of three grades: 2A, 3A, or 4A.
 
 The Wood Chip Moisture Content Estimator returns an estimated moisture percentage from an image. It is not a laboratory measurement and must not be described as a replacement for laboratory testing.
+
+The Generic Tree Ring Boundary Detector highlights likely ring-boundary pixels. It does not provide an annual-ring count or the full DeepCS-TRD geometric output.
 
 ## Publications
 
@@ -442,7 +459,7 @@ Source route: `/research`
 
 ### Which models can visitors try?
 
-Visitors can currently try the SYP–RO Image Classifier, the guitar veneer grading prototype, and the Wood Chip Moisture Content Estimator from the Products page.
+Visitors can currently try the SYP–RO Image Classifier, the guitar veneer grading prototype, the Wood Chip Moisture Content Estimator, and the Generic Tree Ring Boundary Detector from the Products page.
 
 Source route: `/products`
 

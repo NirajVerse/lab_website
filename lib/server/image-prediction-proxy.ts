@@ -39,6 +39,15 @@ interface MoisturePredictionPayload {
   unit: 'percent';
 }
 
+interface TreeRingPredictionPayload {
+  model_id: 'deep-cstrd-generic';
+  threshold: number;
+  input_width: number;
+  input_height: number;
+  boundary_pixel_fraction: number;
+  mask_data_url: string;
+}
+
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -116,6 +125,45 @@ function parseMoisturePredictionPayload(
   return {
     predicted_moisture_percent: record.predicted_moisture_percent,
     unit: 'percent',
+  };
+}
+
+function parseTreeRingPredictionPayload(
+  value: unknown,
+): TreeRingPredictionPayload | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  const record = value as Record<string, unknown>;
+  const maskDataUrl = record.mask_data_url;
+  const isPngDataUrl =
+    typeof maskDataUrl === 'string' &&
+    maskDataUrl.length <= 8 * 1024 * 1024 &&
+    /^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/.test(maskDataUrl);
+
+  if (
+    record.model_id !== 'deep-cstrd-generic' ||
+    !isProbability(record.threshold) ||
+    !isFiniteNumber(record.input_width) ||
+    !Number.isInteger(record.input_width) ||
+    !isFiniteNumber(record.input_height) ||
+    !Number.isInteger(record.input_height) ||
+    record.input_width !== 1504 ||
+    record.input_height !== 1504 ||
+    !isProbability(record.boundary_pixel_fraction) ||
+    !isPngDataUrl
+  ) {
+    return null;
+  }
+
+  return {
+    model_id: 'deep-cstrd-generic',
+    threshold: record.threshold,
+    input_width: record.input_width,
+    input_height: record.input_height,
+    boundary_pixel_fraction: record.boundary_pixel_fraction,
+    mask_data_url: maskDataUrl,
   };
 }
 
@@ -282,5 +330,12 @@ export function proxyMoisturePrediction(request: Request) {
   return proxyImageModelRequest(request, {
     upstreamPath: '/models/wood-chip-moisture/predict',
     parsePayload: parseMoisturePredictionPayload,
+  });
+}
+
+export function proxyTreeRingPrediction(request: Request) {
+  return proxyImageModelRequest(request, {
+    upstreamPath: '/models/tree-ring-detection/predict',
+    parsePayload: parseTreeRingPredictionPayload,
   });
 }

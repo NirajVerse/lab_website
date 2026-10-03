@@ -50,6 +50,23 @@ export const products: Product[] = [
     demoUrl: '/products/wood-chip-moisture-estimator',
     isPlaceholder: false,
   },
+  {
+    id: 'tree-ring-boundary-detector',
+    name: 'Generic Tree Ring Boundary Detector',
+    tagline:
+      'Highlight likely tree-ring boundaries in a wood cross-section image.',
+    description:
+      'This research prototype runs the generic DeepCS-TRD segmentation model and returns a visual overlay of predicted tree-ring boundary pixels. It is designed for varied species and image conditions, but its output remains experimental.',
+    category: 'Image segmentation',
+    status: 'available',
+    capabilities: [
+      'Generic cross-species model',
+      'Boundary overlay',
+      'Image upload',
+    ],
+    demoUrl: '/products/tree-ring-boundary-detector',
+    isPlaceholder: false,
+  },
 ];
 
 export const availableProducts = products.filter(

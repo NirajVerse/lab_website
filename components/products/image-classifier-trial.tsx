@@ -34,6 +34,12 @@ interface ImageRegressionTrialProps {
   instructions: string;
 }
 
+interface ImageSegmentationTrialProps {
+  endpoint: string;
+  inputId: string;
+  instructions: string;
+}
+
 interface ImageTrialProps<Result> {
   endpoint: string;
   inputId: string;
@@ -42,7 +48,7 @@ interface ImageTrialProps<Result> {
   submittingLabel: string;
   failureMessage: string;
   parseResult: (value: unknown) => Result | null;
-  renderResult: (result: Result) => ReactNode;
+  renderResult: (result: Result, previewUrl: string | null) => ReactNode;
 }
 
 interface PredictionResult {
@@ -54,6 +60,15 @@ interface PredictionResult {
 interface MoisturePredictionResult {
   predicted_moisture_percent: number;
   unit: 'percent';
+}
+
+interface TreeRingPredictionResult {
+  model_id: 'deep-cstrd-generic';
+  threshold: number;
+  input_width: number;
+  input_height: number;
+  boundary_pixel_fraction: number;
+  mask_data_url: string;
 }
 
 const percentFormatter = new Intl.NumberFormat('en-US', {
@@ -68,6 +83,10 @@ function isProbability(value: unknown): value is number {
     value >= 0 &&
     value <= 1
   );
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value);
 }
 
 function parsePredictionResult(
@@ -135,6 +154,41 @@ function parseMoisturePredictionResult(
   };
 }
 
+function parseTreeRingPredictionResult(
+  value: unknown,
+): TreeRingPredictionResult | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  const record = value as Record<string, unknown>;
+
+  if (
+    record.model_id !== 'deep-cstrd-generic' ||
+    !isProbability(record.threshold) ||
+    !isFiniteNumber(record.input_width) ||
+    !Number.isInteger(record.input_width) ||
+    !isFiniteNumber(record.input_height) ||
+    !Number.isInteger(record.input_height) ||
+    record.input_width !== 1504 ||
+    record.input_height !== 1504 ||
+    !isProbability(record.boundary_pixel_fraction) ||
+    typeof record.mask_data_url !== 'string' ||
+    !record.mask_data_url.startsWith('data:image/png;base64,')
+  ) {
+    return null;
+  }
+
+  return {
+    model_id: 'deep-cstrd-generic',
+    threshold: record.threshold,
+    input_width: record.input_width,
+    input_height: record.input_height,
+    boundary_pixel_fraction: record.boundary_pixel_fraction,
+    mask_data_url: record.mask_data_url,
+  };
+}
+
 function getErrorMessage(value: unknown) {
   if (!value || typeof value !== 'object') {
     return null;
@@ -182,6 +236,30 @@ export function ImageRegressionTrial({
       parseResult={parseMoisturePredictionResult}
       renderResult={(prediction) => (
         <MoisturePredictionPanel prediction={prediction} />
+      )}
+    />
+  );
+}
+
+export function ImageSegmentationTrial({
+  endpoint,
+  inputId,
+  instructions,
+}: ImageSegmentationTrialProps) {
+  return (
+    <ImageTrial
+      endpoint={endpoint}
+      inputId={inputId}
+      instructions={instructions}
+      submitLabel="Detect ring boundaries"
+      submittingLabel="Detecting…"
+      failureMessage="Tree-ring boundaries could not be detected. Try again."
+      parseResult={parseTreeRingPredictionResult}
+      renderResult={(prediction, previewUrl) => (
+        <TreeRingPredictionPanel
+          prediction={prediction}
+          previewUrl={previewUrl}
+        />
       )}
     />
   );
@@ -447,7 +525,7 @@ function ImageTrial<Result>({
           </div>
         ) : null}
 
-        {result ? renderResult(result) : null}
+        {result ? renderResult(result, previewUrl) : null}
       </div>
     </div>
   );
@@ -545,6 +623,94 @@ function MoisturePredictionPanel({
         This is the model’s direct regression output, not a laboratory moisture
         measurement. Interpret it alongside appropriate sampling and domain
         expertise.
+      </p>
+    </section>
+  );
+}
+
+function TreeRingPredictionPanel({
+  prediction,
+  previewUrl,
+}: {
+  prediction: TreeRingPredictionResult;
+  previewUrl: string | null;
+}) {
+  return (
+    <section className="border-t-4 border-primary bg-secondary/60 p-5 sm:p-7">
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+        Detection complete
+      </p>
+      <div className="mt-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div>
+          <h3 className="font-heading text-3xl font-semibold tracking-[-0.02em]">
+            Predicted boundary map
+          </h3>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+            Maroon pixels mark areas where the model’s boundary probability met
+            the fixed {percentFormatter.format(prediction.threshold)} threshold.
+          </p>
+        </div>
+        <div className="shrink-0 sm:text-right">
+          <p className="font-heading text-2xl font-semibold text-primary">
+            {percentFormatter.format(prediction.boundary_pixel_fraction)}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Image area highlighted
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-7 grid gap-5 md:grid-cols-2">
+        <figure>
+          <div className="relative aspect-square overflow-hidden border border-border bg-muted">
+            {previewUrl ? (
+              <Image
+                src={previewUrl}
+                alt="Uploaded wood cross-section resized for model input"
+                fill
+                unoptimized
+                sizes="(min-width: 768px) 35vw, 80vw"
+                className="object-fill"
+              />
+            ) : null}
+          </div>
+          <figcaption className="mt-2 text-xs font-semibold text-muted-foreground">
+            Model input · {prediction.input_width} × {prediction.input_height}
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div className="relative aspect-square overflow-hidden border border-primary/30 bg-muted">
+            {previewUrl ? (
+              <Image
+                src={previewUrl}
+                alt=""
+                fill
+                unoptimized
+                sizes="(min-width: 768px) 35vw, 80vw"
+                className="object-fill"
+              />
+            ) : null}
+            <Image
+              src={prediction.mask_data_url}
+              alt=""
+              fill
+              unoptimized
+              sizes="(min-width: 768px) 35vw, 80vw"
+              className="pointer-events-none object-fill"
+            />
+          </div>
+          <figcaption className="mt-2 flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+            <span className="size-3 shrink-0 bg-primary" aria-hidden="true" />
+            Predicted tree-ring boundaries
+          </figcaption>
+        </figure>
+      </div>
+
+      <p className="mt-6 border-t border-border pt-5 text-sm leading-6 text-muted-foreground">
+        This visualization is a neural segmentation result. It does not count
+        annual rings or replace the pith-dependent geometric analysis used in
+        the full DeepCS-TRD research workflow.
       </p>
     </section>
   );
