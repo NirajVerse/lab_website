@@ -1,6 +1,6 @@
 'use client';
 
-import { ImageUp, LoaderCircle, RotateCcw } from 'lucide-react';
+import { Download, ImageUp, LoaderCircle, RotateCcw } from 'lucide-react';
 import Image from 'next/image';
 import {
   type ChangeEvent,
@@ -12,6 +12,7 @@ import {
 } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { downloadImageOverlay } from '@/lib/client/download-image-overlay';
 import {
   prepareImageUpload,
   type PreparedImageUpload,
@@ -714,6 +715,34 @@ function TreeRingPredictionPanel({
   prediction: TreeRingPredictionResult;
   previewUrl: string | null;
 }) {
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+
+  async function handleDownload() {
+    if (!previewUrl || isDownloading) {
+      return;
+    }
+
+    setIsDownloading(true);
+    setDownloadError(null);
+
+    try {
+      await downloadImageOverlay({
+        baseImageUrl: previewUrl,
+        overlayImageUrl: prediction.mask_data_url,
+        width: prediction.input_width,
+        height: prediction.input_height,
+        fileName: 'aims-tree-ring-boundary-result.png',
+      });
+    } catch {
+      setDownloadError(
+        'The result image could not be downloaded. Please try again.',
+      );
+    } finally {
+      setIsDownloading(false);
+    }
+  }
+
   return (
     <section className="border-t-4 border-primary bg-secondary/60 p-5 sm:p-7">
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
@@ -785,6 +814,40 @@ function TreeRingPredictionPanel({
           </figcaption>
         </figure>
       </div>
+
+      <div className="mt-6 flex flex-col items-start gap-2 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm leading-6 text-muted-foreground">
+          Save the model input and predicted boundary overlay as one PNG image.
+        </p>
+        <Button
+          type="button"
+          size="lg"
+          className="h-11 rounded-sm px-5 font-semibold"
+          onClick={handleDownload}
+          disabled={!previewUrl || isDownloading}
+        >
+          {isDownloading ? (
+            <>
+              <LoaderCircle className="animate-spin" aria-hidden="true" />
+              Preparing download…
+            </>
+          ) : (
+            <>
+              <Download aria-hidden="true" />
+              Download result image
+            </>
+          )}
+        </Button>
+      </div>
+
+      {downloadError ? (
+        <p
+          role="alert"
+          className="mt-3 border border-destructive/35 bg-destructive/[0.06] px-4 py-3 text-sm text-destructive"
+        >
+          {downloadError}
+        </p>
+      ) : null}
 
       <p className="mt-6 border-t border-border pt-5 text-sm leading-6 text-muted-foreground">
         This visualization is a neural segmentation result. It does not count
